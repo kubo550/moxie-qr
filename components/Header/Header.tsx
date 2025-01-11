@@ -42,7 +42,7 @@ const navItems = [
 
     }, {
         label: 'Shop',
-        href: 'https://reshrd.com/collections/all',
+        href: 'https://moxieimpact.com/pages/qr-apparel',
         protected: false,
 
     },
@@ -91,7 +91,7 @@ export function Header() {
                 <Flex flex={{base: 1}} justify={{base: 'center', md: 'start'}}>
                     <NextLink href={currentUser ? '/' : '/login'}>
                         <div>
-                            <Image src={'/logo_white_200x.png'} alt="logo" width={150} height={21}/>
+                            <Image src={'/logo.png'} alt="logo" width={150} height={21}/>
                         </div>
                     </NextLink>
 
@@ -160,7 +160,7 @@ const DesktopNav = () => {
                 const isExternal = navItem.href.startsWith('http');
 
                 return (
-                    <Box key={navItem.label}>
+                    <Box key={navItem.label} pt="10">
                         <Popover trigger={'hover'} placement={'bottom-start'}>
                             <PopoverTrigger>
                                 {isExternal ? (
