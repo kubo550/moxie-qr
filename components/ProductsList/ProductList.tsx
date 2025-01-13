@@ -16,7 +16,7 @@ export const ProductList = ({products}: ProductListProps) => {
     return (
         <>
             <Heading as="h1">
-                Your Awesome RESHRD Items
+                Your Awesome MOXIE Items
             </Heading>
 
             {

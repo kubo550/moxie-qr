@@ -13,7 +13,7 @@ export const sendInvitationEmail = async (email: string) => {
     const emailConfig = {
         from: displayEmail(),
         to: email,
-        subject: 'Get access to your updateable QR Clothing | RESHRD',
+        subject: 'Get access to your updateable QR Clothing | MOXIEIMPACT',
         html: generateHTMLTemplate.newUser(email),
         attachments: [{
             filename: 'logo.png',
@@ -33,7 +33,7 @@ export const sendEmailToOldCustomer = async (email: string) => {
         const emailConfig = {
             from: displayEmail(),
             to: email,
-            subject: 'New item has joined the party | RESHRD',
+            subject: 'New item has joined the party | MOXIEIMPACT',
             html: generateHTMLTemplate.alreadyUser(),
             attachments: [{
                 filename: 'logo.png',

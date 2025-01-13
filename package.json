@@ -14,6 +14,7 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@hookform/resolvers": "^2.9.10",
+    "@shopify/shopify-api": "^11.7.0",
     "@tanstack/react-query": "^4.18.0",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",

@@ -1,20 +1,12 @@
 import {db} from "../config/firebase";
 import {addDoc, collection, doc, getDocs, updateDoc} from "@firebase/firestore";
+import {Product} from "../types/products";
 
-type DbItem = {
-    codeId: string,
-    productId: string,
-    imageUrl: string,
-    linkUrl: string,
-    name: string,
-    title: string,
-    sku: string
-};
 
-type DbCustomer = {
+export type DbCustomer = {
     email: string,
     createdAt: string,
-    items: DbItem[]
+    items: Product[]
 }
 
 
@@ -75,7 +67,7 @@ export async function getCustomerByEmail(email: string | null) {
 }
 
 
-export async function createNewCustomer(customerEmail: string, customerNewProducts: DbItem[]) {
+export async function createNewCustomer(customerEmail: string, customerNewProducts: Product[]) {
     console.log('createNewCustomer', {customerEmail, customerNewProducts});
     const customerRef = collection(db, 'customers');
 
@@ -90,7 +82,7 @@ export async function createNewCustomer(customerEmail: string, customerNewProduc
 }
 
 
-export async function updateCustomer(customer: DbCustomer, customerAllProducts: DbItem[]) {
+export async function updateCustomer(customer: DbCustomer, customerAllProducts: Product[]) {
     console.log('updateCustomer', {customer, customerAllProducts});
     const customerRef = collection(db, 'customers');
     const customers = await getDocs(customerRef);

@@ -1,60 +1,24 @@
-import type {NextApiRequest, NextApiResponse} from 'next'
-import {generateCodeId} from "../../../infrastructure/generateCode";
-import {createNewCustomer, getCustomerByEmail, updateCustomer} from "../../../infrastructure/firebase";
-import {Product, ShopifyItem} from "../../../types/products";
+import '@shopify/shopify-api/adapters/node'
+import type {NextApiResponse} from 'next'
+import {Product, ProductSource, ShopifyCreateOrder, ShopifyItem} from "../../../types/products";
+import {getShopifyProduct} from "../../../infrastructure/shopify";
+import {createNewCustomer, DbCustomer, getCustomerByEmail, updateCustomer} from "../../../infrastructure/firebase";
 import {sendEmailToOldCustomer, sendInvitationEmail} from "../../../infrastructure/email-utils";
 
 
-const getImageUrl = (sku: string) => `https://cdn.shopify.com/s/files/1/0671/8187/1393/files/${sku.slice(0, -1)}.jpg`;
-
-const toDbItemsFormat = async (item: ShopifyItem): Promise<Omit<Product, 'orderId'>> => {
-
-    const codeId = await generateCodeId();
-
-    return {
-        codeId,
-        imageUrl: getImageUrl(item.sku),
-        linkUrl: 'https://reshrd.com/',
-        name: '',
-        title: item.name,
-        productId: item.product_id,
-        sku: item.sku,
-        modifiedCount: 0,
-    }
-};
-
-
-async function getMappedItems(items: ShopifyItem[], orderNumber: string) {
-    if (!items) {
-        return [];
-    }
-    const mappedItems = [];
-
-    const allItems = items.reduce((acc, item) => {
-        const quantity = item.quantity;
-        const newItem = {...item, quantity: 1};
-        const newItems = Array(quantity).fill(newItem);
-        return [...acc, ...newItems];
-    }, [] as ShopifyItem[]);
-
-    for (const item of allItems) {
-        const mappedItem = await toDbItemsFormat(item);
-        mappedItems.push({...mappedItem, orderId: orderNumber});
-    }
-    return mappedItems;
-}
-
 export default async function handler(
-    req: NextApiRequest,
+    req: ShopifyCreateOrder,
     res: NextApiResponse
 ) {
+
     try {
         console.log('handle-buy-item - new request');
         const customerEmail = req.body.customer.email
-
         console.log('handle-buy-item - customerEmail', customerEmail);
 
         const customerNewProducts = await getMappedItems(req.body.line_items, req.body.order_number);
+
+        console.log(JSON.stringify(customerNewProducts, null, 2));
 
         const customer = await getCustomerByEmail(customerEmail);
         console.log('handle-buy-item - got customer', customer);
@@ -65,7 +29,7 @@ export default async function handler(
             await sendInvitationEmail(customerEmail);
         } else {
             console.log('customer found, updating');
-            await updateCustomer(customer as any, [...customer.items, ...customerNewProducts]);
+            await updateCustomer(customer as DbCustomer, [...customer.items, ...customerNewProducts]);
             await sendEmailToOldCustomer(customerEmail);
         }
 
@@ -80,3 +44,40 @@ export default async function handler(
     }
 }
 
+
+const toDbItemsFormat = async (item: ShopifyItem): Promise<Omit<Product, 'orderId'>> => {
+
+    const codeId = '-1' // await generateCodeId();
+    const shopifyProduct = await getShopifyProduct(item.product_id);
+
+    return {
+        codeId,
+        imageUrl: shopifyProduct?.images?.[0]?.src || '',
+        linkUrl: 'https://moxieimpact/',
+        name: 'Set your name',
+        title: item.name,
+        productId: item.product_id,
+        source: ProductSource.MOXIE
+    }
+};
+
+
+async function getMappedItems(items: ShopifyItem[], orderNumber: number) {
+    if (!items) {
+        return [];
+    }
+    const mappedItems: Product[] = [];
+
+    const allItems = items.reduce((acc, item) => {
+        const quantity = item.quantity;
+        const newItem = {...item, quantity: 1};
+        const newItems = Array(quantity).fill(newItem);
+        return [...acc, ...newItems];
+    }, [] as ShopifyItem[]);
+
+    for (const item of allItems) {
+        const mappedItem = await toDbItemsFormat(item);
+        mappedItems.push({...mappedItem, orderId: orderNumber?.toString()});
+    }
+    return mappedItems;
+}
