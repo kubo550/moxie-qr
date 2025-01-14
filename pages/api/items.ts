@@ -2,6 +2,7 @@ import {NextApiResponse} from "next";
 import {getCustomerByEmail} from "../../infrastructure/firebase";
 import {use} from 'next-api-route-middleware';
 import {NextApiRequestWithUser, validateMethod, validateUser} from "../../utils/validateUser";
+import {Product, ProductSource} from "../../types/products";
 
 
 export default use(validateMethod('GET'), validateUser, async (
@@ -10,6 +11,8 @@ export default use(validateMethod('GET'), validateUser, async (
 ) => {
     try {
         const email = req.headers.email;
+        const source = req.query.source as ProductSource;
+
         const customer = await getCustomerByEmail(email);
 
         if (!customer) {
@@ -18,7 +21,7 @@ export default use(validateMethod('GET'), validateUser, async (
             return;
         }
 
-        const items = customer.items;
+        const items = source ? customer.items.filter((item: Product) => item.source === source) : customer.items;
 
         res.status(200).json({items, customerId: customer.id});
 

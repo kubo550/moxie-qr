@@ -29,9 +29,27 @@ type ProductFormInputs = {
     redirectUrl: string;
 }
 
+const changeableSchemas = [
+    {
+        platform: 'youtube',
+        matches: /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)(\/.+$)?/,
+        message: 'Only YouTube links are allowed',
+    },
+    {
+        platform: 'tiktok',
+        matches: /^(https?:\/\/)?(www\.)?(tiktok\.com)(\/.+$)?/,
+        message: 'Only TikTok links are allowed',
+    },
+    {
+        platform: 'spotify',
+        matches: /^(https?:\/\/)?(www\.)?(spotify\.com)(\/.+$)?/,
+        message: 'Only Spotify links are allowed',
+    }
+];
+
 const schema = yup.object().shape({
     name: yup.string().max(50).notRequired(),
-    redirectUrl: yup.string().url("The text must be a valid link. You must include the “https://” or “http://").max(500),
+    redirectUrl: yup.string().url("The text must be a valid link. Remember to include the “https://”").max(500),
 });
 
 
@@ -146,7 +164,8 @@ export const ProductItem: FC<ProductItemProps> = ({product}) => {
                         #{codeId}
                     </Tag>
 
-                    <Link href={`https://qr.reshrd.com/${codeId}`} target={'_blank'} rel={'noreferrer'} title={'Check it out'}>
+                    <Link href={`https://qr.reshrd.com/${codeId}`} target={'_blank'} rel={'noreferrer'}
+                          title={'Check it out'}>
                         <ExternalLinkIcon marginBottom={'6px'}/>
                     </Link>
                 </HStack>
@@ -203,20 +222,19 @@ export const ProductItem: FC<ProductItemProps> = ({product}) => {
                             </FormControl>
 
 
-
                             <Button
                                 type={'submit'} px={4} marginLeft={'1%'} fontSize={'sm'} rounded={'full'}
-                                    bg={'green.400'} color={'white'}
-                                    minWidth={'127px'} _hover={{bg: 'green.500'}}
-                                    _focus={{bg: 'green.500',}}
-                                    isLoading={isSubmitting}
+                                bg={'green.400'} color={'white'}
+                                minWidth={'127px'} _hover={{bg: 'green.500'}}
+                                _focus={{bg: 'green.500',}}
+                                isLoading={isSubmitting}
                                 disabled={!isDirty}
                             >
                                 Save
                             </Button>
 
 
-                            <Box display={{base: 'block', sm: 'none'}} >
+                            <Box display={{base: 'block', sm: 'none'}}>
                                 <hr style={{margin: '15px 0'}}/>
                             </Box>
                         </Stack>

@@ -1,8 +1,15 @@
 import '@shopify/shopify-api/adapters/node'
 import type {NextApiResponse} from 'next'
-import {Product, ProductSource, ShopifyCreateOrder, ShopifyItem} from "../../../types/products";
-import {getShopifyProduct} from "../../../infrastructure/shopify";
-import {createNewCustomer, DbCustomer, getCustomerByEmail, updateCustomer} from "../../../infrastructure/firebase";
+import {
+    Product,
+    ProductSource,
+    ShopifyCreateOrder,
+    ShopifyItem,
+    VariantConfig, VariantTitle,
+    VariantType
+} from "../../../types/products";
+import {getShopifyProduct, getShopifyVariant} from "../../../infrastructure/shopify";
+import {upsertItems, DbCustomer, getCustomerByEmail, updateCustomer} from "../../../infrastructure/firebase";
 import {sendEmailToOldCustomer, sendInvitationEmail} from "../../../infrastructure/email-utils";
 
 
@@ -11,21 +18,22 @@ export default async function handler(
     res: NextApiResponse
 ) {
 
+    console.log('handle-buy-item - new request', JSON.stringify(req.body.line_items, null, 2));
     try {
         console.log('handle-buy-item - new request');
-        const customerEmail = req.body.customer.email
+        const customerEmail = 'test@wp.pl' // req.body.customer.email
         console.log('handle-buy-item - customerEmail', customerEmail);
 
         const customerNewProducts = await getMappedItems(req.body.line_items, req.body.order_number);
 
-        console.log(JSON.stringify(customerNewProducts, null, 2));
+        console.log('items: ', JSON.stringify(customerNewProducts, null, 2));
 
         const customer = await getCustomerByEmail(customerEmail);
         console.log('handle-buy-item - got customer', customer);
 
         if (!customer) {
             console.log('customer not found, creating new one');
-            await createNewCustomer(customerEmail, customerNewProducts);
+            await upsertItems(customerEmail, customerNewProducts);
             await sendInvitationEmail(customerEmail);
         } else {
             console.log('customer found, updating');
@@ -45,19 +53,87 @@ export default async function handler(
 }
 
 
-const toDbItemsFormat = async (item: ShopifyItem): Promise<Omit<Product, 'orderId'>> => {
+const dailyMoxieUrl = 'https://chic-crumble-94a11f.netlify.app'
 
+function getVariantQrConfig(variant: VariantTitle): VariantConfig {
+    switch (variant) {
+        case VariantTitle.motivationalQuotes:
+            return {
+                type: VariantType.CONSTANT,
+                options: {
+                    base: `${dailyMoxieUrl}/motivation`,
+                }
+            }
+        case VariantTitle.dailyAffirmations:
+            return {
+                type: VariantType.CONSTANT,
+                options: {
+                    base: `${dailyMoxieUrl}/affirmation`,
+                }
+            }
+        case VariantTitle.verseOfTheDay:
+            return {
+                type: VariantType.CONSTANT,
+                options: {
+                    base: `${dailyMoxieUrl}/verse`,
+                }
+            }
+        case VariantTitle.moxieMeditation:
+            return {
+                type: VariantType.CONSTANT,
+                options: {
+                    base: `${dailyMoxieUrl}/meditation`,
+                }
+            }
+        case VariantTitle.moxieTube:
+            return {
+                type: VariantType.CHANGEABLE,
+                options: {
+                    base: 'https://www.youtube.com/',
+                    platform: 'youtube',
+                }
+            }
+        case VariantTitle.moxieTok:
+            return {
+                type: VariantType.CHANGEABLE,
+                options: {
+                    base: 'https://www.tiktok.com/',
+                    platform: 'tiktok',
+                }
+            }
+        case VariantTitle.moxieMusic:
+            return {
+                type: VariantType.CHANGEABLE,
+                options: {
+                    base: 'https://open.spotify.com/',
+                    platform: 'spotify',
+                }
+            }
+        default:
+            return {
+                type: VariantType.CONSTANT,
+                options: {
+                    base: `${dailyMoxieUrl}/motivation`,
+                }
+            }
+    }
+}
+
+const toDbItemsFormat = async (item: ShopifyItem): Promise<Omit<Product, 'orderId'>> => {
     const codeId = '-1' // await generateCodeId();
     const shopifyProduct = await getShopifyProduct(item.product_id);
+    const variant = await getShopifyVariant(item.variant_id);
+    const qrConfig = getVariantQrConfig(variant?.title);
 
     return {
         codeId,
         imageUrl: shopifyProduct?.images?.[0]?.src || '',
-        linkUrl: 'https://moxieimpact/',
+        linkUrl: qrConfig.options.base,
         name: 'Set your name',
         title: item.name,
         productId: item.product_id,
-        source: ProductSource.MOXIE
+        source: ProductSource.MOXIE,
+        qrConfig,
     }
 };
 

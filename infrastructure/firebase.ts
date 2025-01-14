@@ -67,8 +67,8 @@ export async function getCustomerByEmail(email: string | null) {
 }
 
 
-export async function createNewCustomer(customerEmail: string, customerNewProducts: Product[]) {
-    console.log('createNewCustomer', {customerEmail, customerNewProducts});
+export async function upsertItems(customerEmail: string, customerNewProducts: Product[]) {
+    console.log('upsertItems', {customerEmail, customerNewProducts});
     const customerRef = collection(db, 'customers');
 
     const newCustomer: DbCustomer = {

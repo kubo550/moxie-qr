@@ -7,6 +7,7 @@ import {Container, Link, Spinner, Text} from "@chakra-ui/react";
 import Head from "next/head";
 import {GetServerSideProps} from "next";
 import nookies from "nookies";
+import {ProductSource} from "../types/products";
 
 
 export default function Index(props: any) {
@@ -15,7 +16,7 @@ export default function Index(props: any) {
 
     async function getItemsQuery() {
         const apiClient = new ApiClient();
-        return await apiClient.getItems();
+        return await apiClient.getItems({source: ProductSource.MOXIE});
     }
 
     const {data, isLoading, isError} = useQuery('items', getItemsQuery, {

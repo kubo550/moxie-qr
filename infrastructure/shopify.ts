@@ -1,4 +1,5 @@
 import {ApiVersion, shopifyApi} from "@shopify/shopify-api";
+import {Variant} from "../types/products";
 
 const shopify = shopifyApi({
     apiKey: process.env.NEXT_PUBLIC_SHOPIFY_API_KEY!,
@@ -21,4 +22,33 @@ export async function getShopifyProduct(productId: string) {
     })
 
     return product.body.product;
+}
+
+
+export async function getShopifyVariant(variantId: number):Promise<Variant> {
+    const session = shopify.session.customAppSession(process.env.NEXT_PUBLIC_SHOPIFY_SHOP_URL!);
+    const client = new shopify.clients.Graphql({ session });
+
+    const query = `
+    query GetVariant($id: ID!) {
+      productVariant(id: $id) {
+        id
+        title
+      }
+    }
+  `;
+
+    const variables = {
+        id: `gid://shopify/ProductVariant/${variantId}`,
+    };
+
+    const response = await client.query({
+        data: {
+            query,
+            variables,
+        },
+    });
+
+    // @ts-ignore
+    return response.body.data.productVariant;
 }

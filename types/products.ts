@@ -2,6 +2,37 @@ export enum ProductSource {
     MOXIE = 'MOXIE',
 };
 
+export enum VariantTitle {
+    motivationalQuotes = 'Motivational Quotes',
+    dailyAffirmations = 'Daily Affirmations',
+    verseOfTheDay = 'Verse of The Day',
+    moxieTube = 'MoxieTube',
+    moxieTok = 'MoxieTok',
+    moxieMusic = 'MoxieMusic',
+    moxieMeditation = 'Moxie Meditation'
+}
+
+export type Variant = {
+    id: string,
+    title: VariantTitle
+};
+export enum VariantType {
+    CONSTANT = 'constant',
+    CHANGEABLE = 'changeable',
+}
+
+export type VariantConfig = {
+    type: VariantType;
+    options: VariantOptions;
+}
+
+export type VariantOptions = {
+    base: string;
+    platform?: string;
+}
+
+
+
 export type Product = {
     orderId: string
     codeId: string,
@@ -11,6 +42,7 @@ export type Product = {
     productId: string,
     title: string,
     source?: ProductSource
+    qrConfig: VariantConfig
 }
 
 

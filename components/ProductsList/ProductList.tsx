@@ -12,7 +12,6 @@ interface ProductListProps {
 
 export const ProductList = ({products}: ProductListProps) => {
 
-
     return (
         <>
             <Heading as="h1">

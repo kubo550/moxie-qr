@@ -1,5 +1,5 @@
 import axios from "axios";
-import {Product} from "../types/products";
+import {Product, ProductSource} from "../types/products";
 import nookies from "nookies";
 import {NextApiRequest} from "next";
 
@@ -25,8 +25,9 @@ export class ApiClient {
         });
     }
 
-    async getItems() {
+    async getItems(params: {source?: ProductSource} = {}) {
         const {data} = await axios.get(`/api/items`, {
+            params,
             headers: this.getAuthorization()
         });
         return data
