@@ -32,12 +32,12 @@ const navItems = [
     },
     {
         label: 'How does it work',
-        href: 'https://reshrd.com/pages/how-changeable-qr-code-clothing-works',
+        href: 'https://moxieimpact.com/#shopify-section-template--22841667551554__custom_content_9xKRXc',
         protected: false,
     },
     {
         label: 'Contact us',
-        href: '/contact',
+        href: 'https://moxieimpact.com/pages/contact',
         protected: false,
 
     }, {
