@@ -1,14 +1,9 @@
 import {db} from "../config/firebase";
 import {addDoc, collection, doc, getDocs, updateDoc, writeBatch} from "@firebase/firestore";
-import {Product} from "../types/products";
 import {uuidv4} from "@firebase/util";
+import {DbCustomer, Product} from "../domain/products";
 
 
-export type DbCustomer = {
-    email: string,
-    createdAt: string,
-    items: Product[]
-}
 
 
 export async function getCustomers() {
@@ -20,8 +15,8 @@ export async function getCustomers() {
 }
 
 
-export async function updateItem(email: string, codeId: string, newName: string, newLinkUrl: string) {
-    console.log('updateItem', {email, codeId, newName, newLinkUrl});
+export async function updateItem(email: string, codeId: string, update: Partial<Product>) {
+    console.log('updateItem', {email, codeId, update});
 
     const customerRef = collection(db, 'customers');
     const customers = await getDocs(customerRef);
@@ -43,16 +38,20 @@ export async function updateItem(email: string, codeId: string, newName: string,
         return
     }
 
-    if (item.linkUrl !== newLinkUrl) {
-        item.modifiedCount = parseInt( item.modifiedCount || 0,10)  + 1;
-    }
 
-    item.name = newName;
-    item.linkUrl = newLinkUrl;
+   const itemsToSave = items.map((item: any) => {
+        if (item.codeId === codeId) {
+            return {
+                ...item,
+                ...update
+            }
+        }
+        return item;
+    });
 
 
     await updateDoc(customerDoc, {
-        items
+        itemsToSave
     });
 }
 

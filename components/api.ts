@@ -1,7 +1,7 @@
 import axios from "axios";
-import {Product, ProductSource} from "../types/products";
 import nookies from "nookies";
 import {NextApiRequest} from "next";
+import {Product, ProductSource} from "../domain/products";
 
 export class ApiClient {
     constructor() {
@@ -33,7 +33,7 @@ export class ApiClient {
         return data
     }
 
-    async updateItem(item: Pick<Product, 'name' | 'codeId' | 'linkUrl'>) {
+    async updateItem(item: Partial<Product>) {
         const {data} = await axios.post(`/api/update-item`, {item}, {
             headers: this.getAuthorization()
         });

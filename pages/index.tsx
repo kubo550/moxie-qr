@@ -7,7 +7,7 @@ import {Container, Link, Spinner, Text} from "@chakra-ui/react";
 import Head from "next/head";
 import {GetServerSideProps} from "next";
 import nookies from "nookies";
-import {ProductSource} from "../types/products";
+import {ProductSource} from "../domain/products";
 
 
 export default function Index(props: any) {

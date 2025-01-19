@@ -1,16 +1,16 @@
 import '@shopify/shopify-api/adapters/node'
 import type {NextApiResponse} from 'next'
 import {
-    Product,
-    ProductSource,
     ShopifyCreateOrder,
     ShopifyItem,
-    VariantConfig, VariantTitle,
-    VariantType
 } from "../../../types/products";
-import {getShopifyProduct, getShopifyVariant} from "../../../infrastructure/shopify";
-import {upsertItems, DbCustomer, getCustomerByEmail, updateCustomer} from "../../../infrastructure/firebase";
+import {upsertItems, getCustomerByEmail, updateCustomer} from "../../../infrastructure/firebase";
 import {sendEmailToOldCustomer, sendInvitationEmail} from "../../../infrastructure/email-utils";
+import {
+    DbCustomer,
+    Product,
+} from "../../../domain/products";
+import {toDbItemsFormat} from "../../../utils/products";
 
 
 export default async function handler(
@@ -21,7 +21,7 @@ export default async function handler(
     console.log('handle-buy-item - new request', JSON.stringify(req.body.line_items, null, 2));
     try {
         console.log('handle-buy-item - new request');
-        const customerEmail = req.body.customer.email
+        const customerEmail = 'test@wp.pl' // req.body.customer.email
         console.log('handle-buy-item - customerEmail', customerEmail);
 
         const customerNewProducts = await getMappedItems(req.body.line_items, req.body.order_number);
@@ -51,92 +51,6 @@ export default async function handler(
         return
     }
 }
-
-
-const dailyMoxieUrl = 'https://my.moxieimpact.com/daily'
-
-function getVariantQrConfig(variant: VariantTitle): VariantConfig {
-    switch (variant) {
-        case VariantTitle.motivationalQuotes:
-            return {
-                type: VariantType.CONSTANT,
-                options: {
-                    base: `${dailyMoxieUrl}/motivation`,
-                }
-            }
-        case VariantTitle.dailyAffirmations:
-            return {
-                type: VariantType.CONSTANT,
-                options: {
-                    base: `${dailyMoxieUrl}/affirmation`,
-                }
-            }
-        case VariantTitle.verseOfTheDay:
-            return {
-                type: VariantType.CONSTANT,
-                options: {
-                    base: `${dailyMoxieUrl}/verse`,
-                }
-            }
-        case VariantTitle.moxieMeditation:
-            return {
-                type: VariantType.CONSTANT,
-                options: {
-                    base: `${dailyMoxieUrl}/meditation`,
-                }
-            }
-        case VariantTitle.moxieTube:
-            return {
-                type: VariantType.CHANGEABLE,
-                options: {
-                    base: 'https://www.youtube.com/',
-                    platform: 'youtube',
-                }
-            }
-        case VariantTitle.moxieTok:
-            return {
-                type: VariantType.CHANGEABLE,
-                options: {
-                    base: 'https://www.tiktok.com/',
-                    platform: 'tiktok',
-                }
-            }
-        case VariantTitle.moxieMusic:
-            return {
-                type: VariantType.CHANGEABLE,
-                options: {
-                    base: 'https://open.spotify.com/',
-                    platform: 'spotify',
-                }
-            }
-        default:
-            return {
-                type: VariantType.CONSTANT,
-                options: {
-                    base: `${dailyMoxieUrl}/motivation`,
-                }
-            }
-    }
-}
-
-const toDbItemsFormat = async (item: ShopifyItem): Promise<Omit<Product, 'orderId'>> => {
-    const codeId = '-1' // await generateCodeId();
-    const shopifyProduct = await getShopifyProduct(item.product_id);
-    const variant = await getShopifyVariant(item.variant_id);
-    const qrConfig = getVariantQrConfig(variant?.title);
-
-    return {
-        codeId,
-        imageUrl: shopifyProduct?.images?.[0]?.src || '',
-        linkUrl: qrConfig.options.base,
-        name: 'Set your name',
-        title: item.name,
-        productId: item.product_id,
-        source: ProductSource.MOXIE,
-        qrConfig,
-    }
-};
-
 
 async function getMappedItems(items: ShopifyItem[], orderNumber: number) {
     if (!items) {

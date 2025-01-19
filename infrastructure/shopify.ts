@@ -1,5 +1,6 @@
 import {ApiVersion, shopifyApi} from "@shopify/shopify-api";
-import {Variant} from "../types/products";
+import '@shopify/shopify-api/adapters/node'
+import {Variant} from "../domain/products";
 
 const shopify = shopifyApi({
     apiKey: process.env.NEXT_PUBLIC_SHOPIFY_API_KEY!,

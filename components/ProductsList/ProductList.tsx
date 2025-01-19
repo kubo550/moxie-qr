@@ -1,10 +1,8 @@
-import {Product} from "../../types/products";
-
-
 import {
     Heading,
 } from '@chakra-ui/react';
 import {ProductItem} from "./ProductItem";
+import {Product} from "../../domain/products";
 
 interface ProductListProps {
     products: Product[];

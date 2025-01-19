@@ -1,4 +1,3 @@
-import {Product} from "../../types/products";
 import Image from "next/image";
 import {
     Box,
@@ -8,10 +7,12 @@ import {
     HStack,
     Input,
     Link,
-    Tag,
+    Select,
     Stack,
+    Tag,
+    Text,
     useColorModeValue,
-    useToast, Text
+    useToast
 } from "@chakra-ui/react";
 import {ExternalLinkIcon} from "@chakra-ui/icons";
 import {FC, useEffect} from "react";
@@ -19,29 +20,31 @@ import {ApiClient} from "../api";
 import {useForm} from "react-hook-form";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
+import {Platform, Product, VariantTitle, VariantType} from "../../domain/products";
+import {getVariantQrConfig} from "../../utils/products";
 
 interface ProductItemProps {
     product: Product;
 }
 
 type ProductFormInputs = {
-    name: string;
+    variant: VariantTitle;
     redirectUrl: string;
 }
 
 const changeableSchemas = [
     {
-        platform: 'youtube',
+        platform: Platform.youtube,
         matches: /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)(\/.+$)?/,
         message: 'Only YouTube links are allowed',
     },
     {
-        platform: 'tiktok',
+        platform: Platform.tiktok,
         matches: /^(https?:\/\/)?(www\.)?(tiktok\.com)(\/.+$)?/,
         message: 'Only TikTok links are allowed',
     },
     {
-        platform: 'spotify',
+        platform: Platform.spotify,
         matches: /^(https?:\/\/)?(www\.)?(spotify\.com)(\/.+$)?/,
         message: 'Only Spotify links are allowed',
     }
@@ -54,9 +57,10 @@ const schema = yup.object().shape({
 
 
 export const ProductItem: FC<ProductItemProps> = ({product}) => {
-    const {title, name, imageUrl, linkUrl, codeId} = product;
+    const {title, imageUrl, linkUrl, codeId, variant} = product;
 
     const toast = useToast();
+    const borderColor = useColorModeValue('gray.300', 'gray.700');
 
     const {
         handleSubmit,
@@ -68,21 +72,23 @@ export const ProductItem: FC<ProductItemProps> = ({product}) => {
         resolver: yupResolver(schema),
         mode: 'all',
         defaultValues: {
-            name,
+            variant,
             redirectUrl: linkUrl
         }
     })
 
     useEffect(() => {
-        setValue('name', name);
+        setValue('variant', variant);
         setValue('redirectUrl', linkUrl);
-    }, [name, linkUrl, setValue]);
+    }, [variant, linkUrl]);
 
 
-    const handleSaveItem = async ({redirectUrl, name}: ProductFormInputs) => {
+    console.log({variant})
+
+    const handleSaveItem = async ({redirectUrl, variant}: ProductFormInputs) => {
         try {
             const apiClient = new ApiClient();
-            const {item} = await apiClient.updateItem({codeId, name: name.trim(), linkUrl: redirectUrl.trim()});
+            const {item} = await apiClient.updateItem({codeId, variant, linkUrl: redirectUrl.trim()});
 
             toast({
                 title: "Item updated",
@@ -92,7 +98,7 @@ export const ProductItem: FC<ProductItemProps> = ({product}) => {
             });
 
             reset({
-                name: item.name,
+                variant: item.variant,
                 redirectUrl: item.linkUrl
             });
 
@@ -107,6 +113,7 @@ export const ProductItem: FC<ProductItemProps> = ({product}) => {
         }
     };
 
+    const qrConfig = getVariantQrConfig(variant);
 
     return (
         <Box
@@ -178,44 +185,44 @@ export const ProductItem: FC<ProductItemProps> = ({product}) => {
                     <form onSubmit={handleSubmit(handleSaveItem)}>
                         <Stack spacing={4} width={{sm: '300px', md: '400px'}}>
                             <FormControl>
-                                <Input
-                                    {...register('name')}
-                                    variant={'solid'}
-                                    borderWidth={1}
-                                    color={'gray.200'}
-                                    _placeholder={{
-                                        color: 'gray.400',
-                                    }}
-                                    borderColor={useColorModeValue('gray.300', 'gray.700')}
-                                    type={'text'}
-                                    placeholder={'My super cool product...'}
-                                    aria-label={'Name the product'}
-                                />
+                                <Select placeholder="Select variant" {...register('variant')} variant={'solid'} borderWidth={1}
+                                    color={'gray.200'} _placeholder={{color: 'gray.400',}} borderColor={borderColor}
+                                    required aria-label={'Name the product'} marginBottom={{base: '5', sm: '3', md: '4'}}>
+                                    {
+                                        Object.values(VariantTitle).map((variant) => (
+                                            <option key={variant} value={variant}>{variant}</option>
+                                        ))
+                                    }
+
+                                </Select>
                                 <Text color={'red.400'}>
-                                    {errors.name && errors.name.message}
+                                    {errors.variant && errors.variant.message}
                                 </Text>
                             </FormControl>
 
                             <FormControl>
-                                <Input
-                                    {...register('redirectUrl')}
-                                    variant={'solid'}
-                                    borderWidth={1}
-                                    color={'gray.200'}
-                                    _placeholder={{
-                                        color: 'gray.400',
-                                    }}
-                                    borderColor={useColorModeValue('gray.300', 'gray.700')}
-                                    type={'text'}
-                                    required
-                                    placeholder={'e.g. https://google.com'}
-                                    aria-label={'Redirect link'}
-                                    marginBottom={{
-                                        base: '5',
-                                        sm: '3',
-                                        md: '4'
-                                    }}
-                                />
+                                {
+                                    qrConfig.type === VariantType.CHANGEABLE && <Input
+                                        {...register('redirectUrl')}
+                                        variant={'solid'}
+                                        borderWidth={1}
+                                        color={'gray.200'}
+                                        _placeholder={{
+                                            color: 'gray.400',
+                                        }}
+                                        borderColor={borderColor}
+                                        type={'text'}
+                                        required
+                                        placeholder={'e.g. https://google.com'}
+                                        aria-label={'Redirect link'}
+                                        marginBottom={{
+                                            base: '5',
+                                            sm: '3',
+                                            md: '4'
+                                        }}
+                                    />
+
+                                }
                                 <Text color={'red.400'}>
                                     {errors.redirectUrl && errors.redirectUrl.message}
                                 </Text>

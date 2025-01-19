@@ -2,7 +2,7 @@ import {NextApiResponse} from "next";
 import {getCustomerByEmail} from "../../infrastructure/firebase";
 import {use} from 'next-api-route-middleware';
 import {NextApiRequestWithUser, validateMethod, validateUser} from "../../utils/validateUser";
-import {Product, ProductSource} from "../../types/products";
+import {Product, ProductSource} from "../../domain/products";
 
 
 export default use(validateMethod('GET'), validateUser, async (
@@ -15,6 +15,7 @@ export default use(validateMethod('GET'), validateUser, async (
 
         const customer = await getCustomerByEmail(email);
 
+        console.log(JSON.stringify({customer}, null, 2));
         if (!customer) {
             // res.status(404).json({message: 'Customer not found'});
             res.status(200).json({items: [], customerId: null});

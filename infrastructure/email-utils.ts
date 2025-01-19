@@ -54,7 +54,7 @@ export const sendRegistrationEmail = async (email: string) => {
         const emailConfig = {
             from: displayEmail(),
             to: email,
-            subject: 'Thanks for registering! | RESHRD',
+            subject: 'Thanks for registering! | Moxie',
             html: isUser ? generateHTMLTemplate.registrationUser() : generateHTMLTemplate.registrationNotUser(),
             attachments: [{
                 filename: 'logo.png',
