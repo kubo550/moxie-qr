@@ -1,6 +1,7 @@
 import {db} from "../config/firebase";
-import {addDoc, collection, doc, getDocs, updateDoc} from "@firebase/firestore";
+import {addDoc, collection, doc, getDocs, updateDoc, writeBatch} from "@firebase/firestore";
 import {Product} from "../types/products";
+import {uuidv4} from "@firebase/util";
 
 
 export type DbCustomer = {
@@ -99,4 +100,26 @@ export async function updateCustomer(customer: DbCustomer, customerAllProducts: 
     await updateDoc(customerDocRef, {
         items: customerAllProducts
     });
+}
+
+interface Quote {
+    quote: string,
+    type: 'affirmation' | 'motivation' | string
+}
+
+export async function createQuotes(quotes: Quote[]) {
+    console.log('firestore - createQuotes', {quotes});
+    const batch = writeBatch(db);
+
+    quotes.forEach((quote) => {
+        const docRef = doc(db, "quotes", uuidv4());
+        batch.set(docRef, quote);
+    });
+
+    try {
+        await batch.commit();
+        console.log('firestore - created batch of quotes');
+    } catch (error) {
+        console.error('firestore - error creating batch of quotes', error);
+    }
 }

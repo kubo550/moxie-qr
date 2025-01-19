@@ -260,7 +260,6 @@ const MobileNavItem: FC<MobileNavItemProps> = ({label, href, hideMenu, protected
                     </Link>
                 )
             }
-
         </Stack>
     );
 };
