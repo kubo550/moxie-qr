@@ -4,7 +4,7 @@ export function alreadyUser() {
 
         <head>
 
-            <title>New item has joined the party | RESHRD</title>
+            <title>New item has joined the party | MOXIE</title>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <meta content="telephone=no" name="format-detection">

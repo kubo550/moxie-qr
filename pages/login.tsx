@@ -69,7 +69,7 @@ export default function Login() {
     return (
         <div className={styles.container}>
             <Head>
-                <title>Login - Updateable QR Clothing Control Panel | RESHRD</title>
+                <title>Login - Updateable QR Clothing Control Panel | MOXIE</title>
             </Head>
 
             <main className={styles.main}>

@@ -1,6 +1,5 @@
 import axios from "axios";
 import nookies from "nookies";
-import {NextApiRequest} from "next";
 import {Product, ProductSource} from "../domain/products";
 
 export class ApiClient {
@@ -16,15 +15,6 @@ export class ApiClient {
         return data
     }
 
-    static async triggerWebhook(body: NextApiRequest['body']) {
-        console.log('triggerWebhook');
-        await axios.post(`https://my.reshrd.com/api/webhook/handle-buy-item`, body, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-    }
-
     async getItems(params: {source?: ProductSource} = {}) {
         const {data} = await axios.get(`/api/items`, {
             params,
@@ -35,13 +25,6 @@ export class ApiClient {
 
     async updateItem(item: Partial<Product>) {
         const {data} = await axios.post(`/api/update-item`, {item}, {
-            headers: this.getAuthorization()
-        });
-        return data
-    }
-
-    async sendContactForm(emailData: { message: string, email: string, subject: string }) {
-        const {data} = await axios.post(`/api/contact`, emailData, {
             headers: this.getAuthorization()
         });
         return data

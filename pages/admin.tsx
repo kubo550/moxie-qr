@@ -41,7 +41,7 @@ export default function Admin() {
         <div className={styles.container}>
 
             <Head>
-                <title>Admin - Updateable QR Clothing Control Panel | RESHRD</title>
+                <title>Admin - Updateable QR Clothing Control Panel | Moxie</title>
             </Head>
 
             <Container maxW={'3xl'}>

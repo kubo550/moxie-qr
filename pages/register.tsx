@@ -90,7 +90,7 @@ export default function Register({reqEmail}: { reqEmail: string }) {
     return (
         <div>
             <Head>
-                <title>Register - Updateable QR Clothing Control Panel | RESHRD</title>
+                <title>Register - Updateable QR Clothing Control Panel | MOXIE</title>
             </Head>
 
             <main>
@@ -112,7 +112,7 @@ export default function Register({reqEmail}: { reqEmail: string }) {
                                             Sign up
                                         </Heading>
                                         <Text fontSize={{sm: 'sm', md: 'lg'}} color={'gray.600'}>
-                                            to manage your RESHRD items ✌️
+                                            to manage your MOXIE items ✌️
                                         </Text>
                                     </Stack>
 

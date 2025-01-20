@@ -48,7 +48,7 @@ export default function App({Component, pageProps}: AppProps) {
 
     return (<>
             <Head>
-                <title>Updateable QR Clothing Control Panel | RESHRD</title>
+                <title>Updateable QR Clothing Control Panel | MOXIE</title>
                 <meta name="description" content="Changeable QR code clothing management platform | Update your clothes any time you want | Explore limitless possibilities of the RESHRD streetwear and casualwear collections."/>
                 <link rel="icon" href="/favicon.ico"/>
                 <meta name={'robots'} content={'noindex, nofollow'}/>

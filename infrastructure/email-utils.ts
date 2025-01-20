@@ -68,5 +68,5 @@ export const sendRegistrationEmail = async (email: string) => {
 }
 
 function displayEmail() {
-   return `RESHRD team <${process.env.NEXT_PUBLIC_RESHRD_EMAIL}>`
+   return `MOXIE team <${process.env.NEXT_PUBLIC_RESHRD_EMAIL}>`
 }

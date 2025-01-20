@@ -6,7 +6,7 @@ export function newUser(email: string) {
         <head>
 
             <title>Get
-} access to your updateable QR Clothing | RESHRD</title>
+} access to your updateable QR Clothing | MOXIE</title>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <meta content="telephone=no" name="format-detection">
