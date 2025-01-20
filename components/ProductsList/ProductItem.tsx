@@ -20,7 +20,7 @@ import {ApiClient} from "../api";
 import {useForm} from "react-hook-form";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {Platform, Product, VariantTitle, VariantType} from "../../domain/products";
+import {Product, VariantTitle, VariantType} from "../../domain/products";
 import {dailyMoxieUrl, getVariantQrConfig} from "../../utils/products";
 
 interface ProductItemProps {
@@ -33,10 +33,42 @@ type ProductFormInputs = {
     redirectUrl: string;
 }
 
-
 const schema = yup.object().shape({
     name: yup.string().max(50).notRequired(),
-    redirectUrl: yup.string().url("The text must be a valid link. Remember to include the “https://”").max(500),
+    redirectUrl: yup
+        .string()
+        .when('variant', (variant, schema) => {
+            switch (variant) {
+                case 'MoxieTube':
+                    return schema
+                        .url("The text must be a valid link. Remember to include the “https://”")
+                        .matches(
+                            /^(https:\/\/(www\.)?youtube\.com\/.*|https:\/\/my\.moxieimpact\.com\/.*)$/,
+                            'Link must be a valid YouTube URL.'
+                        )
+                        .max(500);
+                case 'MoxieTok':
+                    return schema
+                        .url("The text must be a valid link. Remember to include the “https://”")
+                        .matches(
+                            /^(https:\/\/(www\.)?tiktok\.com\/.*|https:\/\/my\.moxieimpact\.com\/.*)$/,
+                            'Link must be a valid TikTok URL.'
+                        )
+                        .max(500);
+                case 'MoxieMusic':
+                    return schema
+                        .url("The text must be a valid link. Remember to include the “https://”")
+                        .matches(
+                            /^(https:\/\/(www\.)?spotify\.com\/.*|https:\/\/my\.moxieimpact\.com\/.*)$/,
+                            'Link must be a valid Spotify URL.'
+                        )
+                        .max(500);
+                default:
+                    return schema
+                        .url("The text must be a valid link. Remember to include the “https://”")
+                        .max(500);
+            }
+        }),
 });
 
 
@@ -51,6 +83,7 @@ export const ProductItem: FC<ProductItemProps> = ({product}) => {
         register,
         reset,
         watch,
+        setValue,
         formState: {errors, isSubmitting, isDirty}
     } = useForm<ProductFormInputs>({
         resolver: yupResolver(schema),
@@ -65,6 +98,12 @@ export const ProductItem: FC<ProductItemProps> = ({product}) => {
     const currentVariant = watch('variant');
     const currentUseOriginalLink = watch('useCustomLink');
     const qrConfig = getVariantQrConfig(currentVariant);
+
+    useEffect(() => {
+        if (!currentUseOriginalLink) {
+            setValue('redirectUrl', qrConfig.options.base);
+        }
+    }, [currentUseOriginalLink]);
 
     const handleSaveItem = async ({redirectUrl, variant}: ProductFormInputs) => {
         try {
@@ -205,7 +244,7 @@ export const ProductItem: FC<ProductItemProps> = ({product}) => {
                                             borderColor={borderColor}
                                             type={'text'}
                                             required
-                                            placeholder={'e.g. https://google.com'}
+                                            placeholder={`https://www.${qrConfig.options.platforms?.[0] || 'youtube'}.com/123`}
                                             aria-label={'Redirect link'}
                                             marginBottom={{
                                                 base: '5',
