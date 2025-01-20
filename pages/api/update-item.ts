@@ -22,7 +22,7 @@ export default use(validateMethod('POST'), validateUser, async (
 
         const newVariant = item.variant;
         const variantConfig = getVariantQrConfig(newVariant);
-        const newLinkUrl =  variantConfig.options.base
+        const newLinkUrl =  item.linkUrl || variantConfig.options.base
 
         if (variantConfig.type === VariantType.CHANGEABLE && !isValidLinkUrl(newLinkUrl)) {
             return res.status(400).json({error: 'Invalid linkUrl'})

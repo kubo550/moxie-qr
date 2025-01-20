@@ -15,16 +15,16 @@ export default use(validateMethod('GET'), validateUser, async (
 
         const customer = await getCustomerByEmail(email);
 
-        console.log(JSON.stringify({customer}, null, 2));
         if (!customer) {
             // res.status(404).json({message: 'Customer not found'});
             res.status(200).json({items: [], customerId: null});
             return;
         }
 
-        const items = source ? customer.items.filter((item: Product) => item.source === source) : customer.items;
+        const items = customer.items.filter((item: Product) => item.source === source)
 
-        res.status(200).json({items, customerId: customer.id});
+        const currentHrAndMn = `${new Date().getHours()}:${new Date().getMinutes()}`
+        res.status(200).json({items, customerId: customer.id, currentHrAndMn});
 
     } catch (e) {
         console.error(e)

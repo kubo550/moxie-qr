@@ -51,7 +51,7 @@ export async function updateItem(email: string, codeId: string, update: Partial<
 
 
     await updateDoc(customerDoc, {
-        itemsToSave
+        items: itemsToSave
     });
 }
 

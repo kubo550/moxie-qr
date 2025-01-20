@@ -1,7 +1,7 @@
 import Image from "next/image";
 import {
     Box,
-    Button,
+    Button, Checkbox,
     FormControl,
     Heading,
     HStack,
@@ -21,7 +21,7 @@ import {useForm} from "react-hook-form";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {Platform, Product, VariantTitle, VariantType} from "../../domain/products";
-import {getVariantQrConfig} from "../../utils/products";
+import {dailyMoxieUrl, getVariantQrConfig} from "../../utils/products";
 
 interface ProductItemProps {
     product: Product;
@@ -29,26 +29,10 @@ interface ProductItemProps {
 
 type ProductFormInputs = {
     variant: VariantTitle;
+    useCustomLink: boolean;
     redirectUrl: string;
 }
 
-const changeableSchemas = [
-    {
-        platform: Platform.youtube,
-        matches: /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)(\/.+$)?/,
-        message: 'Only YouTube links are allowed',
-    },
-    {
-        platform: Platform.tiktok,
-        matches: /^(https?:\/\/)?(www\.)?(tiktok\.com)(\/.+$)?/,
-        message: 'Only TikTok links are allowed',
-    },
-    {
-        platform: Platform.spotify,
-        matches: /^(https?:\/\/)?(www\.)?(spotify\.com)(\/.+$)?/,
-        message: 'Only Spotify links are allowed',
-    }
-];
 
 const schema = yup.object().shape({
     name: yup.string().max(50).notRequired(),
@@ -65,25 +49,22 @@ export const ProductItem: FC<ProductItemProps> = ({product}) => {
     const {
         handleSubmit,
         register,
-        setValue,
         reset,
+        watch,
         formState: {errors, isSubmitting, isDirty}
     } = useForm<ProductFormInputs>({
         resolver: yupResolver(schema),
         mode: 'all',
         defaultValues: {
             variant,
+            useCustomLink: !linkUrl.startsWith(dailyMoxieUrl),
             redirectUrl: linkUrl
         }
     })
 
-    useEffect(() => {
-        setValue('variant', variant);
-        setValue('redirectUrl', linkUrl);
-    }, [variant, linkUrl]);
-
-
-    console.log({variant})
+    const currentVariant = watch('variant');
+    const currentUseOriginalLink = watch('useCustomLink');
+    const qrConfig = getVariantQrConfig(currentVariant);
 
     const handleSaveItem = async ({redirectUrl, variant}: ProductFormInputs) => {
         try {
@@ -99,7 +80,8 @@ export const ProductItem: FC<ProductItemProps> = ({product}) => {
 
             reset({
                 variant: item.variant,
-                redirectUrl: item.linkUrl
+                redirectUrl: item.linkUrl,
+                useCustomLink: !item.linkUrl.startsWith(dailyMoxieUrl)
             });
 
         } catch (e) {
@@ -113,7 +95,6 @@ export const ProductItem: FC<ProductItemProps> = ({product}) => {
         }
     };
 
-    const qrConfig = getVariantQrConfig(variant);
 
     return (
         <Box
@@ -152,6 +133,7 @@ export const ProductItem: FC<ProductItemProps> = ({product}) => {
                     />
                 </Box>
             </Box>
+
             <Box display="flex" flex="1" flexDirection="column" justifyContent="center"
                  marginTop={{base: '3', sm: '0'}}>
 
@@ -185,9 +167,10 @@ export const ProductItem: FC<ProductItemProps> = ({product}) => {
                     <form onSubmit={handleSubmit(handleSaveItem)}>
                         <Stack spacing={4} width={{sm: '300px', md: '400px'}}>
                             <FormControl>
-                                <Select placeholder="Select variant" {...register('variant')} variant={'solid'} borderWidth={1}
-                                    color={'gray.200'} _placeholder={{color: 'gray.400',}} borderColor={borderColor}
-                                    required aria-label={'Name the product'} marginBottom={{base: '5', sm: '3', md: '4'}}>
+                                <Select {...register('variant')} variant={'solid'} borderWidth={1}
+                                        color={'gray.200'} _placeholder={{color: 'gray.400',}} borderColor={borderColor}
+                                        required aria-label={'Name the product'}
+                                        marginBottom={{base: '5', sm: '3', md: '4'}}>
                                     {
                                         Object.values(VariantTitle).map((variant) => (
                                             <option key={variant} value={variant}>{variant}</option>
@@ -200,33 +183,42 @@ export const ProductItem: FC<ProductItemProps> = ({product}) => {
                                 </Text>
                             </FormControl>
 
-                            <FormControl>
-                                {
-                                    qrConfig.type === VariantType.CHANGEABLE && <Input
-                                        {...register('redirectUrl')}
-                                        variant={'solid'}
-                                        borderWidth={1}
-                                        color={'gray.200'}
-                                        _placeholder={{
-                                            color: 'gray.400',
-                                        }}
-                                        borderColor={borderColor}
-                                        type={'text'}
-                                        required
-                                        placeholder={'e.g. https://google.com'}
-                                        aria-label={'Redirect link'}
-                                        marginBottom={{
-                                            base: '5',
-                                            sm: '3',
-                                            md: '4'
-                                        }}
-                                    />
+                            {qrConfig.type === VariantType.CHANGEABLE && (
+                                <FormControl style={{marginTop: '0'}}>
+                                    <Checkbox {...register('useCustomLink')} colorScheme="green"
+                                              defaultChecked={!linkUrl.startsWith(dailyMoxieUrl)} my={'2'} ml={2}>
+                                        Enter a custom link
+                                    </Checkbox>
+                                </FormControl>
+                            )}
 
-                                }
-                                <Text color={'red.400'}>
-                                    {errors.redirectUrl && errors.redirectUrl.message}
-                                </Text>
-                            </FormControl>
+                            {qrConfig.type === VariantType.CHANGEABLE && currentUseOriginalLink && (
+                                <FormControl>
+                                         <Input
+                                            {...register('redirectUrl')}
+                                            variant={'solid'}
+                                            borderWidth={1}
+                                            color={'gray.200'}
+                                            _placeholder={{
+                                                color: 'gray.400',
+                                            }}
+                                            borderColor={borderColor}
+                                            type={'text'}
+                                            required
+                                            placeholder={'e.g. https://google.com'}
+                                            aria-label={'Redirect link'}
+                                            marginBottom={{
+                                                base: '5',
+                                                sm: '3',
+                                                md: '4'
+                                            }}
+                                        />
+                                    <Text color={'red.400'}>
+                                        {errors.redirectUrl && errors.redirectUrl.message}
+                                    </Text>
+                                </FormControl>
+                            )}
+
 
 
                             <Button
