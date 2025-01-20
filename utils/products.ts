@@ -3,7 +3,7 @@ import {ShopifyItem} from "../types/products";
 import {getShopifyProduct, getShopifyVariant} from "../infrastructure/shopify";
 import {generateCodeId} from "../infrastructure/generateCode";
 
-export const dailyMoxieUrl = 'https://my.moxieimpact.com/daily'
+export const dailyMoxieUrl = 'https://daily.moxieimpact.com'
 
 export function getVariantQrConfig(variant: VariantTitle): VariantConfig {
     switch (variant) {
