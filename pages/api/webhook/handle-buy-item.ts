@@ -21,8 +21,9 @@ export default async function handler(
     console.log('handle-buy-item - new request', JSON.stringify(req.body.line_items, null, 2));
     try {
         console.log('handle-buy-item - new request');
-        const customerEmail = 'test@wp.pl' // req.body.customer.email
+        const customerEmail = req.body.customer.email
         console.log('handle-buy-item - customerEmail', customerEmail);
+
 
         const customerNewProducts = await getMappedItems(req.body.line_items, req.body.order_number);
 
