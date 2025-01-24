@@ -37,7 +37,7 @@ export const sendEmailToOldCustomer = async (email: string) => {
             html: generateHTMLTemplate.alreadyUser(),
             attachments: [{
                 filename: 'logo.png',
-                path: `https://eoq.soundestlink.com/image/newsletter/6366e56f7c36a9001d08e0be`,
+                path: `https://moxieimpact.com/cdn/shop/files/WhatsApp_Image_2024-05-28_at_11.38.16_PM.jpg?v=1717326879`,
                 cid: 'logo'
             }]
         };
@@ -58,7 +58,7 @@ export const sendRegistrationEmail = async (email: string) => {
             html: isUser ? generateHTMLTemplate.registrationUser() : generateHTMLTemplate.registrationNotUser(),
             attachments: [{
                 filename: 'logo.png',
-                path: `https://eoq.soundestlink.com/image/newsletter/6366e56f7c36a9001d08e0be`,
+                path: `https://moxieimpact.com/cdn/shop/files/WhatsApp_Image_2024-05-28_at_11.38.16_PM.jpg?v=1717326879`,
                 cid: 'logo'
             }]
         };

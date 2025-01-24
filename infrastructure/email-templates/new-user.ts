@@ -382,7 +382,7 @@ export function newUser(email: string) {
                                                                                                                         valign="middle"
                                                                                                                         style="font-family:Arial, sans-serif;font-size:16px;color:#FFFFFF;">
 
-                                                                                                                        <a target="_blank" href="https://moxie-qr.vercel.app//register?email=${email}"
+                                                                                                                        <a target="_blank" href="https://moxie-qr.vercel.app/register?email=${email}"
                                                                                                                             style="text-decoration: none;  padding-left:16px;padding-right:16px;padding-top:16px;padding-bottom:16px; ; display: inline-block;  font-family:Arial, sans-serif;font-size:16px;color:#FFFFFF; line-height: 1.2;">
                                                                                                                             Register
                                                                                                                             here

@@ -342,7 +342,7 @@ export function alreadyUser() {
                                                                                                                         valign="middle"
                                                                                                                         style="font-family:Arial, sans-serif;font-size:16px;color:#FFFFFF;">
 
-                                                                                                                        <a target="_blank" href="https://my.MOXIE.com/login"
+                                                                                                                        <a target="_blank" href="https://moxie-qr.vercel.app/login"
                                                                                                                             style="text-decoration: none;  padding-left:16px;padding-right:16px;padding-top:16px;padding-bottom:16px; ; display: inline-block;  font-family:Arial, sans-serif;font-size:16px;color:#FFFFFF; line-height: 1.2;">
                                                                                                                             Log in
                                                                                                                         </a>
