@@ -1,6 +1,6 @@
 import {Platform, Product, ProductSource, VariantConfig, VariantTitle, VariantType} from "../domain/products";
 import {ShopifyItem} from "../types/products";
-import {getShopifyProduct, getShopifyVariant} from "../infrastructure/shopify";
+import {getShopifyProduct} from "../infrastructure/shopify";
 import {generateCodeId} from "../infrastructure/generateCode";
 
 export const dailyMoxieUrl = 'https://daily.moxieimpact.com'
@@ -70,8 +70,13 @@ export function getVariantQrConfig(variant: VariantTitle): VariantConfig {
 }
 
 export const toDbItemsFormat = async (item: ShopifyItem): Promise<Omit<Product, 'orderId'>> => {
-    const [codeId, shopifyProduct, variant] = await Promise.all([await generateCodeId(), await getShopifyProduct(item.product_id), await getShopifyVariant(item.variant_id)])
-    const qrConfig = getVariantQrConfig(variant?.title);
+    const [codeId, shopifyProduct] = await Promise.all([await generateCodeId(), await getShopifyProduct(item.product_id)])
+    const qrConfig = {
+        type: VariantType.CONSTANT,
+        options: {
+            base: `${dailyMoxieUrl}/motivation`,
+        }
+    };
 
     return {
         codeId,
@@ -80,6 +85,6 @@ export const toDbItemsFormat = async (item: ShopifyItem): Promise<Omit<Product, 
         title: item.name,
         productId: item.product_id,
         source: ProductSource.MOXIE,
-        variant: variant?.title || VariantTitle.motivationalQuotes,
+        variant: VariantTitle.motivationalQuotes,
     }
 };
