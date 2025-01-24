@@ -230,7 +230,7 @@ export function registrationUser() {
                                                                                                         <tr>
                                                                                                             <td>
                                                                                                                 <a target="_blank"
-                                                                                                                    href="https://reshrd.com/collections/all">
+                                                                                                                    href="https://MOXIE.com/collections/all">
                                                                                                                     <img width="283"
                                                                                                                         alt=""
                                                                                                                         height="39"
@@ -325,7 +325,7 @@ export function registrationUser() {
                                                                                                         take a look at
                                                                                                         our <a
                                                                                                             target="_blank"
-                                                                                                            href="https://reshrd.com/pages/faq">FAQ
+                                                                                                            href="https://MOXIE.com/pages/faq">FAQ
                                                                                                             page</a> to
                                                                                                         find
                                                                                                         answers to any
@@ -375,7 +375,7 @@ export function registrationUser() {
                                                                                                                         style="font-family:Arial, sans-serif;font-size:16px;color:#FFFFFF;">
 
                                                                                                                         <a target="_blank"
-                                                                                                                            href="https://my.reshrd.com/login"
+                                                                                                                            href="https://my.MOXIE.com/login"
                                                                                                                             style="text-decoration: none;  padding-left:16px;padding-right:16px;padding-top:16px;padding-bottom:16px; ; display: inline-block;  font-family:Arial, sans-serif;font-size:16px;color:#FFFFFF; line-height: 1.2;">
                                                                                                                             Log
                                                                                                                             in
@@ -399,13 +399,13 @@ export function registrationUser() {
                                                                                                     bgcolor=""
                                                                                                     class="mobile-table">
                                                                                                     <p>
-                                                                                                    Need any help or have any questions? Please feel free to reach out to us by submitting the form <a href="https://my.reshrd.com/contact" target="_blank"> here </a> or responding to
+                                                                                                    Need any help or have any questions? Please feel free to reach out to us by submitting the form <a href="https://my.MOXIE.com/contact" target="_blank"> here </a> or responding to
                                                                                                     this email. We are here to help!
                                                                                                     </p>
                                                                                                     <p
                                                                                                         style="margin: 0px;">
                                                                                                         Cheers, <br>
-                                                                                                        RESHRD Team
+                                                                                                        MOXIE Team
                                                                                                     </p>
                                                                                                 </td>
                                                                                             </tr>

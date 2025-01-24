@@ -49,18 +49,10 @@ export default function App({Component, pageProps}: AppProps) {
     return (<>
             <Head>
                 <title>Updateable QR Clothing Control Panel | MOXIE</title>
-                <meta name="description" content="Changeable QR code clothing management platform | Update your clothes any time you want | Explore limitless possibilities of the RESHRD streetwear and casualwear collections."/>
+                <meta name="description" content="Changeable QR code clothing management platform | Update your clothes any time you want | Explore limitless possibilities of the MOXIE streetwear and casualwear collections."/>
                 <link rel="icon" href="/favicon.ico"/>
                 <meta name={'robots'} content={'noindex, nofollow'}/>
             </Head>
-            <Script strategy="afterInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-C96BPLFQXN"/>
-            <Script
-                id='google-analytics'
-                strategy="afterInteractive"
-                dangerouslySetInnerHTML={{
-                    __html: `window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-C96BPLFQXN');`,
-                }}
-            />
             <QueryClientProvider client={queryClient}>
                 <AuthContextProvider>
                     <ChakraProvider theme={theme} cssVarsRoot="body">

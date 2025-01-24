@@ -41,13 +41,12 @@ export default function Index(props: any) {
 
                     {
                         data && data.items.length === 0 && <Text marginTop={12}>
-                            You don’t have any items yet — <Link href={'https://reshrd.com/collections/all'}
+                            You don’t have any items yet — <Link href={'https://moxieimpact.com/'}
                                                                  target={'_blank'}
                                                                  rel={'noopener noreferrer'}
                                                                  color={
                                                                      'blue.500'
-                                                                 }> head to our store </Link> and get yourself a special 15%
-                            discount for getting here with code: <b>DoraTheExplora15</b>
+                                                                 }> head to our store </Link> to get some!
                         </Text>
                     }
 

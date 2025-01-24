@@ -231,7 +231,7 @@ export function registrationNotUser() {
                                                                                                         <tr>
                                                                                                             <td>
                                                                                                                 <a target="_blank"
-                                                                                                                    href="https://reshrd.com/collections/all">
+                                                                                                                    href="https://moxieimpact.com/">
                                                                                                                     <img width="283"
                                                                                                                         alt=""
                                                                                                                         height="39"
@@ -304,7 +304,7 @@ export function registrationNotUser() {
                                                                                                     </p>
                                                                                                     <p
                                                                                                         style="margin: 0px; text-align: left;">
-                                                                                                        Thanks for registering on the <a href="https://my.reshrd.com"> QR Control Panel</a>.
+                                                                                                        Thanks for registering on the Moxie QR Control Panel.
                                                                                                     </p>
                                                                                                     <br>
                                                                                                     <p
@@ -357,7 +357,7 @@ export function registrationNotUser() {
                                                                                                                         style="font-family:Arial, sans-serif;font-size:16px;color:#FFFFFF;">
 
                                                                                                                         <a target="_blank"
-                                                                                                                            href="https://reshrd.com/collections/all"
+                                                                                                                            href="https://MOXIE.com/collections/all"
                                                                                                                             style="text-decoration: none;  padding-left:16px;padding-right:16px;padding-top:16px;padding-bottom:16px; ; display: inline-block;  font-family:Arial, sans-serif;font-size:16px;color:#FFFFFF; line-height: 1.2;">
                                                                                                                             Shop now
                                                                                                                         </a>
@@ -388,11 +388,11 @@ export function registrationNotUser() {
                                                                                                     <p
                                                                                                         style="margin: 0px;">
                                                                                                         Have a fantastic day, <br>
-                                                                                                        RESHRD Team
+                                                                                                        MOXIE Team
                                                                                                     </p>
                                                                                                     <br> <br>
                                                                                                     <p style="margin: 0px;">
-                                                                                                    P.S. If you believe we’ve made a mistake and you actually have your superb RESHRD clothing, be sure to contact us here
+                                                                                                    P.S. If you believe we’ve made a mistake and you actually have your superb MOXIE clothing, be sure to contact us here
                                                                                                     or reply to this email, and we’ll make sure you can get all the benefits of your changeable QR clothing.
                                                                                                     </p>
                                                                                                 </td>

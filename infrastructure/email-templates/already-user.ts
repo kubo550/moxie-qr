@@ -231,7 +231,7 @@ export function alreadyUser() {
                                                                                                         <tr>
                                                                                                             <td>
                                                                                                                 <a target="_blank"
-                                                                                                                    href="https://reshrd.com/collections/all">
+                                                                                                                    href="https://moxieimpact.com/">
                                                                                                                     <img width="283"
                                                                                                                         alt=""
                                                                                                                         height="39"
@@ -342,7 +342,7 @@ export function alreadyUser() {
                                                                                                                         valign="middle"
                                                                                                                         style="font-family:Arial, sans-serif;font-size:16px;color:#FFFFFF;">
 
-                                                                                                                        <a target="_blank" href="https://my.reshrd.com/login"
+                                                                                                                        <a target="_blank" href="https://my.MOXIE.com/login"
                                                                                                                             style="text-decoration: none;  padding-left:16px;padding-right:16px;padding-top:16px;padding-bottom:16px; ; display: inline-block;  font-family:Arial, sans-serif;font-size:16px;color:#FFFFFF; line-height: 1.2;">
                                                                                                                             Log in
                                                                                                                         </a>
@@ -369,7 +369,7 @@ export function alreadyUser() {
                                                                                                     </p>
                                                                                                     <p
                                                                                                         style="margin: 0px;">
-                                                                                                        Cheers, RESHRD
+                                                                                                        Cheers, MOXIE
                                                                                                         Team
                                                                                                     </p>
                                                                                                 </td>
