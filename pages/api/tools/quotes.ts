@@ -1,7 +1,7 @@
 import {NextApiRequest, NextApiResponse} from "next";
 import {use} from "next-api-route-middleware";
 import {basicAuthMiddleware, validateMethod} from "../../../utils/validateUser";
-import {createQuotes} from "../../../infrastructure/firebase";
+import {createQuotes, migrateQuotes} from "../../../infrastructure/firebase";
 
 
 const quotes = async function handler(

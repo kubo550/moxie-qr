@@ -112,7 +112,7 @@ export async function createQuotes(quotes: Quote[]) {
 
     quotes.forEach((quote) => {
         const docRef = doc(db, "quotes", uuidv4());
-        batch.set(docRef, quote);
+        batch.set(docRef, {...quote, id: shortUuid()});
     });
 
     try {
@@ -120,5 +120,31 @@ export async function createQuotes(quotes: Quote[]) {
         console.log('firestore - created batch of quotes');
     } catch (error) {
         console.error('firestore - error creating batch of quotes', error);
+    }
+}
+
+const shortUuid = () => {
+    const uuid = uuidv4();
+    return Buffer.from(uuid).toString('base64').replace(/=/g, '').substring(0, 12); // Skraca do 12 znaków
+};
+export async function migrateQuotes() {
+    console.log('firestore - migrateQuotes');
+    const quotesRef = collection(db, 'quotes');
+    const quotes = await getDocs(quotesRef);
+
+    const batch = writeBatch(db);
+
+    quotes.docs.forEach((quote) => {
+        const docRef = doc(db, 'quotes', quote.id);
+        batch.update(docRef, {
+            id: shortUuid()
+        });
+    });
+
+    try {
+        await batch.commit();
+        console.log('firestore - migrated quotes');
+    } catch (error) {
+        console.error('firestore - error migrating quotes', error);
     }
 }
