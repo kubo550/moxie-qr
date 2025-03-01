@@ -3,7 +3,7 @@ import {useQuery} from "react-query";
 import {useAuth} from "../context/AuthContext";
 import {ApiClient} from "../components/api";
 import {ProductList} from "../components/ProductsList/ProductList";
-import {Container, Link, Spinner, Text} from "@chakra-ui/react";
+import {background, Container, Link, Spinner, Text} from "@chakra-ui/react";
 import Head from "next/head";
 import {GetServerSideProps} from "next";
 import nookies from "nookies";

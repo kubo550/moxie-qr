@@ -4,6 +4,7 @@ import {uuidv4} from "@firebase/util";
 import {DbCustomer, Product} from "../domain/products";
 
 
+const QUOTES_COLLECTION_NAME = 'quotes';
 
 
 export async function getCustomers() {
@@ -101,9 +102,12 @@ export async function updateCustomer(customer: DbCustomer, customerAllProducts: 
     });
 }
 
+export type QuoteType = 'affirmation' | 'motivation' | 'meditation' | string;
+
 interface Quote {
     quote: string,
-    type: 'affirmation' | 'motivation' | string
+    type: QuoteType,
+    id: string
 }
 
 export async function createQuotes(quotes: Quote[]) {
@@ -127,6 +131,7 @@ const shortUuid = () => {
     const uuid = uuidv4();
     return Buffer.from(uuid).toString('base64').replace(/=/g, '').substring(0, 12); // Skraca do 12 znaków
 };
+
 export async function migrateQuotes() {
     console.log('firestore - migrateQuotes');
     const quotesRef = collection(db, 'quotes');
@@ -148,3 +153,36 @@ export async function migrateQuotes() {
         console.error('firestore - error migrating quotes', error);
     }
 }
+
+
+
+export const getRandomQuote = async (type: string): Promise<Quote> => {
+    try {
+        const querySnapshot = await getDocs(collection(db, QUOTES_COLLECTION_NAME));
+        const quotes = querySnapshot.docs.map(doc => doc.data()) as Quote[];
+        const currentTypeQuotes = quotes.filter(quote => quote.type === type);
+        return randomElement(currentTypeQuotes) || randomElement(quotes);
+    } catch (error) {
+        console.log('Error getting quote:', error as unknown);
+        return randomElement(fallbackQuotes);
+    }
+}
+
+export function randomElement<T>(array: T[]): T {
+    return array[Math.floor(Math.random() * array.length)];
+}
+
+
+
+const fallbackQuotes = [
+    {id: '1', type: 'affirmation', quote: "I am worthy of all the good things that come my way"},
+    {id: '2', type: 'affirmation', quote: "Every day, in every way, I am becoming better and better"},
+    {id: '3', type: 'affirmation', quote: "I choose to focus on what I can control and let go of what I can’t"},
+    {id: '4', type: 'affirmation', quote: "Happiness is a choice, and today I choose to be happy"},
+    {id: '5', type: 'affirmation', quote: "I am resilient, strong, and brave in the face of challenges"},
+    {id: '6', type: 'affirmation', quote: "I am enough, just as I am, and I deserve love and respect"},
+    {id: '7', type: 'affirmation', quote: "I have the power to create the life I desire"},
+    {id: '8', type: 'affirmation', quote: "My thoughts shape my reality, and I choose to think positively"},
+    {id: '9', type: 'affirmation', quote: "I am grateful for the abundance that flows into my life"},
+    {id: '10', type: 'affirmation', quote: "I trust myself to make the right decisions for my growth and happiness"}
+];
