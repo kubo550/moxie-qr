@@ -9,7 +9,7 @@ const randomQuote = async function handler(
     res: NextApiResponse
 ) {
     try {
-        const type = req.query.type = 'affirmation' as QuoteType;
+        const type = (req.query.type || 'affirmation') as QuoteType ;
         console.log('quotes - get random quote', {type});
 
         const quote = await getRandomQuote(type);
