@@ -139,11 +139,15 @@ export async function migrateQuotes() {
 
     const batch = writeBatch(db);
 
-    quotes.docs.forEach((quote) => {
+    quotes.docs.forEach((quote, idx, arr) => {
         const docRef = doc(db, 'quotes', quote.id);
+
+        // change qoute to quote
         batch.update(docRef, {
-            id: shortUuid()
+            id: shortUuid(),
+            quote: quote.data().qoute || quote.data().quote
         });
+        console.log('firestore - migrated quote', { idx: idx + 1, total: arr.length });
     });
 
     try {

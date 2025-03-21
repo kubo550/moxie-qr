@@ -1,19 +1,30 @@
 import {NextApiRequest, NextApiResponse} from "next";
 import {use} from "next-api-route-middleware";
 import {basicAuthMiddleware, validateMethod} from "../../../utils/validateUser";
-import {createQuotes, migrateQuotes} from "../../../infrastructure/firebase";
+import {createQuotes} from "../../../infrastructure/firebase";
+import * as yup from 'yup';
 
+
+const quoteSchema = yup.object({
+    quote: yup.string().required("Quote is required").min(1, "Quote cannot be empty"),
+});
+
+const quotesSchema = yup.object({
+    quotes: yup.array().of(quoteSchema).min(1, "At least one quote is required")
+});
 
 const quotes = async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
     try {
-        console.log('quotes - create quotes', req.body.quotes.length);
+        console.log('quotes - create quotes - got request');
 
-        if (!req.body.quotes || req.body.quotes.length === 0) {
-            console.log('quotes - no quotes given for request');
-            return res.status(400).json({message: 'Bad request'});
+        try {
+            await quotesSchema.validate(req.body);
+        } catch (e) {
+            console.log('quotes - create quotes - validation error', e);
+            return res.status(400).json({message: e instanceof yup.ValidationError ? e.errors : 'Invalid request'});
         }
 
         await createQuotes(req.body.quotes);
