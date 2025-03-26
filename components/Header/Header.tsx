@@ -153,16 +153,16 @@ const DesktopNav = () => {
     }
 
     return (
-        <Stack direction={'row'} spacing={4}>
+        <Stack direction={'row'} spacing={4} justifyContent={'center'} alignItems={'center'}>
             {navItems.map((navItem) => {
                 const isCurrent = isCurrentPath(navItem.href);
 
                 const isExternal = navItem.href.startsWith('http');
 
                 return (
-                    <Box key={navItem.label} pt="10">
+                    <Box key={navItem.label} justifyContent={'center'} alignItems={'center'}>
                         <Popover trigger={'hover'} placement={'bottom-start'}>
-                            <PopoverTrigger>
+                            <PopoverTrigger >
                                 {isExternal ? (
                                     <Link p={2}
                                           fontSize={'sm'}
