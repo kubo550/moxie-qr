@@ -84,8 +84,6 @@ export default function Register({reqEmail}: { reqEmail: string }) {
         }
     };
 
-    const bgContainer = useColorModeValue('gray.50', 'gray.800');
-    const bgBox = useColorModeValue('white', 'gray.700');
 
     return (
         <div>
@@ -105,8 +103,7 @@ export default function Register({reqEmail}: { reqEmail: string }) {
                             <Flex
                                 align={'center'}
                                 justify={'center'}>
-                                <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}
-                                       bg={bgContainer}>
+                                <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
                                     <Stack align={'center'}>
                                         <Heading fontSize={{sm: 'xl', md: '4xl'}} textAlign={'center'}>
                                             Sign up
@@ -123,7 +120,6 @@ export default function Register({reqEmail}: { reqEmail: string }) {
 
                                     <Box
                                         rounded={'lg'}
-                                        bg={bgBox}
                                         boxShadow={'lg'}
                                         p={8}>
                                         <Stack spacing={4} width={{sm: '300px', md: '400px'}}>
@@ -190,7 +186,7 @@ export default function Register({reqEmail}: { reqEmail: string }) {
                                             <Stack spacing={10} pt={2}>
                                                 <Button
                                                     mt={4}
-                                                    colorScheme="teal"
+                                                    colorScheme="gray"
                                                     isLoading={isSubmitting}
                                                     type="submit">
                                                     Sign up

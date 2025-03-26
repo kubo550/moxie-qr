@@ -262,9 +262,9 @@ export const ProductItem: FC<ProductItemProps> = ({product}) => {
 
                             <Button
                                 type={'submit'} px={4} marginLeft={'1%'} fontSize={'sm'} rounded={'full'}
-                                bg={'green.400'} color={'white'}
-                                minWidth={'127px'} _hover={{bg: 'green.500'}}
-                                _focus={{bg: 'green.500',}}
+                                bg={'orange.300'} color={'white'}
+                                minWidth={'127px'} _hover={{bg: 'orange.400',}}
+                                _focus={{bg: 'orange.400',}}
                                 isLoading={isSubmitting}
                                 disabled={!isDirty}
                             >

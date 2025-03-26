@@ -21,6 +21,11 @@ a {
   }
   body {
     color: white;
-    background: black;
+    background-color: rgba(0, 0, 0, 0.64) !important;
   }
+}
+
+
+:root {
+  --chakra-colors-chakra-body-bg: #ffebcd; /* np. blanched almond */
 }

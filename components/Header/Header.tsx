@@ -22,6 +22,7 @@ import {useAuth} from "../../context/AuthContext";
 import NextLink from 'next/link';
 import Image from "next/image";
 import {FC} from "react";
+export const DARK_BG_COLOR = 'blackAlpha.700';
 
 
 const navItems = [
@@ -69,14 +70,14 @@ export function Header() {
     return (
         <Box>
             <Flex
-                bg={useColorModeValue('white', 'gray.800')}
+                bg={useColorModeValue('white', DARK_BG_COLOR)}
                 color={useColorModeValue('gray.600', 'white')}
                 minH={'60px'}
                 py={{base: 2}}
                 px={{base: 4}}
                 borderBottom={1}
                 borderStyle={'solid'}
-                borderColor={useColorModeValue('gray.200', 'gray.900')}
+                borderColor={useColorModeValue('gray.200', DARK_BG_COLOR)}
                 align={'center'}>
                 <Flex
                     flex={{base: 1, md: 'auto'}}
@@ -141,8 +142,8 @@ export function Header() {
 
 const DesktopNav = () => {
     const linkColor = useColorModeValue('gray.600', 'gray.200');
-    const linkHoverColor = useColorModeValue('gray.800', 'white');
-    const linkActiveColor = useColorModeValue('gray.900', 'black.300');
+    const linkHoverColor = useColorModeValue(DARK_BG_COLOR, 'white');
+    const linkActiveColor = useColorModeValue(DARK_BG_COLOR, 'black.300');
     const {currentUser} = useAuth();
 
     const router = useRouter()
@@ -204,7 +205,7 @@ const DesktopNav = () => {
 
 const MobileNav: FC<{ hideMenu: () => void }> = ({hideMenu}) => {
     return (
-        <Stack bg={useColorModeValue('white', 'gray.800')} p={4} display={{md: 'none'}}>
+        <Stack bg={useColorModeValue('white', DARK_BG_COLOR)} p={4} display={{md: 'none'}}>
             {navItems.map((navItem) => (
                 <MobileNavItem key={navItem.label} {...navItem} hideMenu={hideMenu}/>
             ))}
@@ -215,8 +216,8 @@ const MobileNav: FC<{ hideMenu: () => void }> = ({hideMenu}) => {
 type MobileNavItemProps = { label: string, href: string, hideMenu: () => void, protected?: boolean };
 const MobileNavItem: FC<MobileNavItemProps> = ({label, href, hideMenu, protected: isProtected}) => {
     const linkColor = useColorModeValue('gray.600', 'gray.200');
-    const linkHoverColor = useColorModeValue('gray.800', 'white');
-    const linkActiveColor = useColorModeValue('gray.900', 'black.300');
+    const linkHoverColor = useColorModeValue(DARK_BG_COLOR, 'white');
+    const linkActiveColor = useColorModeValue(DARK_BG_COLOR, 'black.300');
 
     const router = useRouter()
 

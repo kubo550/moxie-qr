@@ -5,12 +5,13 @@ import {
     Text,
     useColorModeValue,
 } from '@chakra-ui/react';
+import {DARK_BG_COLOR} from "../Header/Header";
 
 export const Footer = () => {
     const currentYear = new Date().getFullYear();
     return (
         <Box
-            bg={useColorModeValue('gray.50', 'gray.900')}
+            bg={useColorModeValue('gray.50', DARK_BG_COLOR)}
             color={useColorModeValue('gray.700', 'gray.200')}
             display={'flex'}
             flexDirection={'column'}

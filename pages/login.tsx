@@ -21,6 +21,7 @@ import * as yup from "yup";
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {ViewIcon, ViewOffIcon} from "@chakra-ui/icons";
+import {DARK_BG_COLOR} from "../components/Header/Header";
 
 const schema = yup.object().shape({
     email: yup.string().email().required(),
@@ -79,7 +80,7 @@ export default function Login() {
                         justify={'center'}
                     >
                         <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}
-                               bg={useColorModeValue('gray.50', 'gray.800')}>
+                               bg={useColorModeValue('gray.50', DARK_BG_COLOR)}>
                             <Stack align={'center'}>
                                 <Heading fontSize={{sm: 'xl', md: '4xl'}}>Sign in</Heading>
                                 <Text fontSize={{sm: 'sm', md: 'lg'}} color={'gray.600'}>
@@ -92,8 +93,9 @@ export default function Login() {
                             }
 
                             <Box
+
                                 rounded={'lg'}
-                                bg={useColorModeValue('white', 'gray.700')}
+                                bg={useColorModeValue('white', DARK_BG_COLOR)}
                                 boxShadow={'lg'}
                                 p={8}>
                                 <Stack spacing={4} width={{sm: '300px', md: '400px'}}>
@@ -138,7 +140,7 @@ export default function Login() {
                                     <Stack spacing={10} pt={2}>
                                         <Button
                                             mt={4}
-                                            colorScheme="teal"
+                                            colorScheme="gray"
                                             isLoading={isSubmitting}
                                             type="submit">
                                             Sign in

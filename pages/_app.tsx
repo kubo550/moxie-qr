@@ -14,6 +14,14 @@ import Head from "next/head";
 const config = {
     initialColorMode: 'dark',
     useSystemColorMode: false,
+    styles: {
+        global: {
+            body: {
+                bg: "#f0f0f0",
+                color: "white"
+            }
+        }
+    },
     colors: {
         brand: {
             100: '#00264c',
