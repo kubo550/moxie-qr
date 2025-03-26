@@ -149,15 +149,36 @@ export const ProductItem: FC<ProductItemProps> = ({product}) => {
                 position="relative"
                 alignItems="center">
                 <Box
-                    width={{base: '100%', sm: '85%'}}
+                    width={{ base: '100%', sm: '85%' }}
                     zIndex="2"
-                    marginLeft={{base: '0', sm: '5%'}}
-                    marginTop="5%">
+                    ml={{ base: '0', sm: '5%' }}
+                    mt="5%"
+                    borderRadius="6px"
+                    overflow="hidden"
+                    position="relative"
+                    _before={{
+                        content: '""',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        bg: 'blackAlpha.300',
+                        zIndex: 1,
+                    }}
+                >
                     <Image
                         src={imageUrl}
                         alt="some good alt text"
                         width={400}
                         height={400}
+                        style={{
+                            position: 'relative',
+                            zIndex: 2,
+                            mixBlendMode: 'multiply',
+                            width: '100%',
+                            height: 'auto',
+                        }}
                     />
                 </Box>
                 <Box zIndex="1" width="100%" position="absolute" height="100%">
