@@ -1,8 +1,9 @@
 import {NextApiRequest, NextApiResponse} from "next";
 import {use} from "next-api-route-middleware";
-import {basicAuthMiddleware, validateMethod} from "../../../utils/validateUser";
 import {createQuotes} from "../../../infrastructure/firebase";
 import * as yup from 'yup';
+import {basicAuthMiddleware} from "../../../utils/basicAuthMiddleware";
+import {validateMethodMiddleware} from "../../../utils/validateMethodMiddleware";
 
 
 const quoteSchema = yup.object({
@@ -36,4 +37,4 @@ const quotes = async function handler(
     }
 };
 
-export default use(validateMethod('POST'), basicAuthMiddleware, quotes)
+export default use(validateMethodMiddleware('POST'), basicAuthMiddleware, quotes)

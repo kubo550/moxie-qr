@@ -1,16 +1,17 @@
 import {NextApiResponse} from "next";
 import {updateItem} from "../../infrastructure/firebase";
 import {use} from "next-api-route-middleware";
-import {NextApiRequestWithUser, validateMethod, validateUser} from "../../utils/validateUser";
+import {NextApiRequestWithUser, validateUserMiddleware} from "../../utils/validateUserMiddleware";
 import {getVariantQrConfig} from "../../utils/products";
 import {VariantType} from "../../domain/products";
+import {validateMethodMiddleware} from "../../utils/validateMethodMiddleware";
 
 
 function isValidLinkUrl(newLinkUrl: string) {
     return newLinkUrl.length <= 500 && newLinkUrl.startsWith('http');
 }
 
-export default use(validateMethod('POST'), validateUser, async (
+export default use(validateMethodMiddleware('POST'), validateUserMiddleware, async (
     req: NextApiRequestWithUser,
     res: NextApiResponse
 ) => {

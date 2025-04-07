@@ -1,7 +1,8 @@
 import {NextApiRequest, NextApiResponse} from "next";
 import {use} from "next-api-route-middleware";
-import {basicAuthMiddleware, validateMethod} from "../../../../utils/validateUser";
 import {getRandomQuote, QuoteType} from "../../../../infrastructure/firebase";
+import {basicAuthMiddleware} from "../../../../utils/basicAuthMiddleware";
+import {validateMethodMiddleware} from "../../../../utils/validateMethodMiddleware";
 
 
 const randomQuote = async function handler(
@@ -22,4 +23,4 @@ const randomQuote = async function handler(
     }
 };
 
-export default use(validateMethod('GET'), basicAuthMiddleware, randomQuote)
+export default use(validateMethodMiddleware('GET'), basicAuthMiddleware, randomQuote)

@@ -1,11 +1,12 @@
 import {NextApiResponse} from "next";
 import {getCustomerByEmail} from "../../infrastructure/firebase";
 import {use} from 'next-api-route-middleware';
-import {NextApiRequestWithUser, validateMethod, validateUser} from "../../utils/validateUser";
+import {NextApiRequestWithUser, validateUserMiddleware} from "../../utils/validateUserMiddleware";
 import {Product, ProductSource} from "../../domain/products";
+import {validateMethodMiddleware} from "../../utils/validateMethodMiddleware";
 
 
-export default use(validateMethod('GET'), validateUser, async (
+export default use(validateMethodMiddleware('GET'), validateUserMiddleware, async (
     req: NextApiRequestWithUser,
     res: NextApiResponse,
 ) => {

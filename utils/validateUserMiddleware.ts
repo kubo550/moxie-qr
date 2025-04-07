@@ -4,8 +4,6 @@ import {NextApiRequest} from "next";
 
 export type NextApiRequestWithUser = NextApiRequest & { headers: { email: string } };
 
-type AllowedMethod = 'GET' | 'POST';
-
 
 export const isAdmin = (email: string | null | undefined) => {
     console.log('checking if admin', email);
@@ -14,12 +12,6 @@ export const isAdmin = (email: string | null | undefined) => {
     console.log('admin emails', adminEmails);
 
     return adminEmails.includes(email);
-}
-export const validateMethod = (method: AllowedMethod): Middleware => async (req, res, next) => {
-    if (req.method !== method) {
-        return res.status(405).json({message: 'Method not allowed'});
-    }
-    await next();
 }
 
 export async function getTokenInfo(token: string) {
@@ -32,7 +24,7 @@ export async function getTokenInfo(token: string) {
     return decodedToken;
 }
 
-export const validateUser: Middleware = async (req, res, next) => {
+export const validateUserMiddleware: Middleware = async (req, res, next) => {
     const authHeader = req.headers.authorization;
     const token = authHeader?.split(' ')?.[1] as string;
 
@@ -61,25 +53,3 @@ export const validateUser: Middleware = async (req, res, next) => {
 }
 
 
-export const basicAuthMiddleware: Middleware = async (req, res, next) => {
-    try {
-        const authHeader = req.headers.authorization;
-
-        if (!authHeader || !authHeader.startsWith('Basic ')) {
-            return res.status(401).json({error: 'Unauthorized'});
-        }
-
-        const base64Credentials = authHeader.split(' ')[1];
-        const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
-        const [username, password] = credentials.split(':');
-
-        if (username !== process.env.NEXT_PUBLIC_API_AUTH_USERNAME || password !== process.env.NEXT_PUBLIC_API_AUTH_PASSWORD) {
-            return res.status(401).json({error: 'Invalid credentials'});
-        }
-
-        return next();
-    } catch (e) {
-        console.error('error during allowMethods', e)
-        return res.status(500).json({})
-    }
-};
