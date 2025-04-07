@@ -16,6 +16,7 @@ const limiter = rateLimit({
 });
 
 export const rateLimitMiddleware = async (req: NextApiRequest, res: NextApiResponse, next: () => void) => {
+    // @ts-ignore
     const session = await getIronSession(req, res, sessionOptions) as any;
 
     if (!session.anonymousId) {
