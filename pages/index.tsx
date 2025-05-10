@@ -11,7 +11,7 @@ import {ProductSource} from "../domain/products";
 
 
 export default function Index(props: any) {
-    const {getCurrentUserToken} = useAuth();
+    const {getCurrentUserToken, currentUser} = useAuth();
 
 
     async function getItemsQuery() {
@@ -19,7 +19,7 @@ export default function Index(props: any) {
         return await apiClient.getItems({source: ProductSource.MOXIE});
     }
 
-    const {data, isLoading, isError} = useQuery('items', getItemsQuery, {
+    const {data, isLoading, isError} = useQuery([currentUser?.email, 'items'], getItemsQuery, {
         enabled: !!getCurrentUserToken,
         refetchOnWindowFocus: false,
     });
