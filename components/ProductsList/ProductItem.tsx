@@ -1,7 +1,7 @@
 import Image from "next/image";
 import {
     Box,
-    Button, Checkbox,
+    Button,
     FormControl,
     Heading,
     HStack,

@@ -69,6 +69,13 @@ export function getVariantQrConfig(variant: VariantTitle): VariantConfig {
                     base: `https://moxierecovery.co/`,
                 }
             }
+            case VariantTitle.custom:
+            return {
+                type: VariantType.CHANGEABLE,
+                options: {
+                    base: ``,
+                }
+            }
         default:
             return {
                 type: VariantType.CONSTANT,

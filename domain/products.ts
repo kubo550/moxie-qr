@@ -9,10 +9,11 @@ export enum VariantTitle {
     facebook = 'Facebook',
     spotify = 'Spotify',
 
-
     moxieDaily = 'MoxieDaily',
     moxieFaith = 'MoxieFaith',
     moxieRecovery = 'MoxieRecovery',
+
+    custom = 'Custom',
 }
 
 export type Variant = {
