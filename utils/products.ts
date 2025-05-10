@@ -7,63 +7,73 @@ export const dailyMoxieUrl = 'https://daily.moxieimpact.com'
 
 export function getVariantQrConfig(variant: VariantTitle): VariantConfig {
     switch (variant) {
-        case VariantTitle.motivationalQuotes:
-            return {
-                type: VariantType.CONSTANT,
-                options: {
-                    base: `${dailyMoxieUrl}/motivation`,
-                }
-            }
-        case VariantTitle.dailyAffirmations:
-            return {
-                type: VariantType.CONSTANT,
-                options: {
-                    base: `${dailyMoxieUrl}/affirmation`,
-                }
-            }
-        case VariantTitle.verseOfTheDay:
-            return {
-                type: VariantType.CONSTANT,
-                options: {
-                    base: `${dailyMoxieUrl}/verse`,
-                }
-            }
-        case VariantTitle.moxieMeditation:
-            return {
-                type: VariantType.CONSTANT,
-                options: {
-                    base: `${dailyMoxieUrl}/meditation`,
-                }
-            }
-        case VariantTitle.moxieTube:
+        case VariantTitle.instagram:
             return {
                 type: VariantType.CHANGEABLE,
                 options: {
-                    base: `${dailyMoxieUrl}/moxie-tube`,
+                    base: `https://instagram.com/`,
+                    platforms: [Platform.instagram],
+                }
+            }
+        case VariantTitle.youtube:
+            return {
+                type: VariantType.CHANGEABLE,
+                options: {
+                    base: `https://youtube.com/`,
                     platforms: [Platform.youtube],
                 }
             }
-        case VariantTitle.moxieTok:
+        case VariantTitle.tiktok:
             return {
                 type: VariantType.CHANGEABLE,
                 options: {
-                    base: `${dailyMoxieUrl}/moxie-tok`,
+                    base: `https://tiktok.com/`,
                     platforms: [Platform.tiktok],
                 }
             }
-        case VariantTitle.moxieMusic:
+        case VariantTitle.facebook:
             return {
                 type: VariantType.CHANGEABLE,
                 options: {
-                    base: `${dailyMoxieUrl}/moxie-music`,
+                    base: `https://facebook.com/`,
+                    platforms: [Platform.facebook],
+                }
+            }
+        case VariantTitle.spotify:
+            return {
+                type: VariantType.CHANGEABLE,
+                options: {
+                    base: `https://spotify.com/`,
                     platforms: [Platform.spotify],
+                }
+            }
+
+        case VariantTitle.moxieDaily:
+            return {
+                type: VariantType.CONSTANT,
+                options: {
+                    base: `https://moxiedaily.co/`,
+                }
+            }
+        case VariantTitle.moxieFaith:
+            return {
+                type: VariantType.CONSTANT,
+                options: {
+                    base: `https://moxiefaith.co/`,
+                }
+            }
+        case VariantTitle.moxieRecovery:
+            return {
+                type: VariantType.CONSTANT,
+                options: {
+                    base: `https://moxierecovery.co/`,
                 }
             }
         default:
             return {
                 type: VariantType.CONSTANT,
                 options: {
-                    base: `${dailyMoxieUrl}/motivation`,
+                    base: `https://moxiedaily.co/`,
                 }
             }
     }
@@ -74,7 +84,7 @@ export const toDbItemsFormat = async (item: ShopifyItem): Promise<Omit<Product, 
     const qrConfig = {
         type: VariantType.CONSTANT,
         options: {
-            base: `${dailyMoxieUrl}/motivation`,
+            base: `https://moxiedaily.co/`,
         }
     };
 
@@ -85,6 +95,6 @@ export const toDbItemsFormat = async (item: ShopifyItem): Promise<Omit<Product, 
         title: item.name,
         productId: item.product_id,
         source: ProductSource.MOXIE,
-        variant: VariantTitle.motivationalQuotes,
+        variant: VariantTitle.moxieDaily,
     }
 };

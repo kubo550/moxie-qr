@@ -3,13 +3,16 @@ export enum ProductSource {
 };
 
 export enum VariantTitle {
-    motivationalQuotes = 'Motivational Quotes',
-    dailyAffirmations = 'Daily Affirmations',
-    verseOfTheDay = 'Verse of The Day',
-    moxieMeditation = 'Moxie Meditation',
-    moxieTube = 'MoxieTube',
-    moxieTok = 'MoxieTok',
-    moxieMusic = 'MoxieMusic',
+    instagram = 'Instagram',
+    youtube = 'YouTube',
+    tiktok = 'TikTok',
+    facebook = 'Facebook',
+    spotify = 'Spotify',
+
+
+    moxieDaily = 'MoxieDaily',
+    moxieFaith = 'MoxieFaith',
+    moxieRecovery = 'MoxieRecovery',
 }
 
 export type Variant = {
@@ -30,6 +33,8 @@ export enum Platform {
     youtube = 'youtube',
     tiktok = 'tiktok',
     spotify = 'spotify',
+    facebook = 'facebook',
+    instagram = 'instagram',
 }
 export type VariantOptions = {
     base: string;

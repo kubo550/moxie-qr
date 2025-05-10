@@ -39,15 +39,15 @@ const schema = yup.object().shape({
         .string()
         .when('variant', (variant, schema) => {
             switch (variant) {
-                case 'MoxieTube':
+                case VariantTitle.youtube:
                     return schema
                         .url("The text must be a valid link. Remember to include the “https://”")
                         .matches(
-                            /^(https:\/\/(www\.)?youtube\.com\/.*|https:\/\/my\.moxieimpact\.com\/.*)$/,
+                            /^(https:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|shorts\/|embed\/)|youtu\.be\/)[\w\-]{11}(\?.*)?$/,
                             'Link must be a valid YouTube URL.'
                         )
                         .max(500);
-                case 'MoxieTok':
+                case VariantTitle.tiktok:
                     return schema
                         .url("The text must be a valid link. Remember to include the “https://”")
                         .matches(
@@ -55,11 +55,27 @@ const schema = yup.object().shape({
                             'Link must be a valid TikTok URL.'
                         )
                         .max(500);
-                case 'MoxieMusic':
+                case VariantTitle.spotify:
                     return schema
                         .url("The text must be a valid link. Remember to include the “https://”")
                         .matches(
                             /^(https:\/\/(www\.)?spotify\.com\/.*|https:\/\/my\.moxieimpact\.com\/.*)$/,
+                            'Link must be a valid Spotify URL.'
+                        )
+                        .max(500);
+                case VariantTitle.instagram:
+                    return schema
+                        .url("The text must be a valid link. Remember to include the “https://”")
+                        .matches(
+                            /^(https:\/\/(www\.)?instagram\.com\/.*|https:\/\/my\.moxieimpact\.com\/.*)$/,
+                            'Link must be a valid Spotify URL.'
+                        )
+                        .max(500);
+                case VariantTitle.youtube:
+                    return schema
+                        .url("The text must be a valid link. Remember to include the “https://”")
+                        .matches(
+                            /^(https:\/\/(www\.)?youtube\.com\/.*|https:\/\/my\.moxieimpact\.com\/.*)$/,
                             'Link must be a valid Spotify URL.'
                         )
                         .max(500);
@@ -99,11 +115,20 @@ export const ProductItem: FC<ProductItemProps> = ({product}) => {
     const currentUseOriginalLink = watch('useCustomLink');
     const qrConfig = getVariantQrConfig(currentVariant);
 
+
+
     useEffect(() => {
         if (!currentUseOriginalLink) {
             setValue('redirectUrl', qrConfig.options.base);
         }
     }, [currentUseOriginalLink]);
+
+    useEffect(() => {
+        if (currentVariant) {
+            const config = getVariantQrConfig(currentVariant);
+            setValue('redirectUrl', config.options.base);
+        }
+    }, [currentVariant]);
 
     const handleSaveItem = async ({redirectUrl, variant}: ProductFormInputs) => {
         try {
@@ -230,7 +255,8 @@ export const ProductItem: FC<ProductItemProps> = ({product}) => {
                                 <Select {...register('variant')} variant={'solid'} borderWidth={1}
                                         color={'gray.200'} _placeholder={{color: 'gray.400',}} borderColor={borderColor}
                                         required aria-label={'Name the product'}
-                                        marginBottom={{base: '5', sm: '3', md: '4'}}>
+                                        marginBottom={{base: '5', sm: '3', md: '4'}}
+                                >
                                     {
                                         Object.values(VariantTitle).map((variant) => (
                                             <option key={variant} value={variant}>{variant}</option>
@@ -243,16 +269,8 @@ export const ProductItem: FC<ProductItemProps> = ({product}) => {
                                 </Text>
                             </FormControl>
 
-                            {qrConfig.type === VariantType.CHANGEABLE && (
-                                <FormControl style={{marginTop: '0'}}>
-                                    <Checkbox {...register('useCustomLink')} colorScheme="green"
-                                              defaultChecked={!linkUrl.startsWith(dailyMoxieUrl)} my={'2'} ml={2}>
-                                        Enter a custom link
-                                    </Checkbox>
-                                </FormControl>
-                            )}
 
-                            {qrConfig.type === VariantType.CHANGEABLE && currentUseOriginalLink && (
+                            {qrConfig.type === VariantType.CHANGEABLE && (
                                 <FormControl>
                                          <Input
                                             {...register('redirectUrl')}
