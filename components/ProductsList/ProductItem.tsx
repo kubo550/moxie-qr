@@ -15,7 +15,7 @@ import {
     useToast
 } from "@chakra-ui/react";
 import {ExternalLinkIcon} from "@chakra-ui/icons";
-import {FC, useEffect} from "react";
+import {FC, useEffect, useState} from "react";
 import {ApiClient} from "../api";
 import {useForm} from "react-hook-form";
 import * as yup from "yup";
@@ -112,6 +112,7 @@ export const ProductItem: FC<ProductItemProps> = ({product}) => {
     })
 
     const currentVariant = watch('variant');
+    const [currentSavedVariant, setCurrentSavedVariant] = useState(currentVariant)
     const currentUseOriginalLink = watch('useCustomLink');
     const qrConfig = getVariantQrConfig(currentVariant);
 
@@ -124,11 +125,11 @@ export const ProductItem: FC<ProductItemProps> = ({product}) => {
     }, [currentUseOriginalLink]);
 
     useEffect(() => {
-        if (currentVariant) {
+        if (currentVariant && currentVariant !== currentSavedVariant) {
             const config = getVariantQrConfig(currentVariant);
             setValue('redirectUrl', config.options.base);
         }
-    }, [currentVariant]);
+    }, [currentVariant, variant]);
 
     const handleSaveItem = async ({redirectUrl, variant}: ProductFormInputs) => {
         try {
@@ -147,6 +148,8 @@ export const ProductItem: FC<ProductItemProps> = ({product}) => {
                 redirectUrl: item.linkUrl,
                 useCustomLink: !item.linkUrl.startsWith(dailyMoxieUrl)
             });
+
+            setCurrentSavedVariant(item.variant);
 
         } catch (e) {
             console.log(e);
