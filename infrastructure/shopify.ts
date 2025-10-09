@@ -14,15 +14,29 @@ const shopify = shopifyApi({
     isCustomStoreApp: true,
 });
 
+// Local in-memory cache for Shopify products
+const productCache = new Map<string, any>();
 
 export async function getShopifyProduct(productId: string) {
+    // Check cache first
+    if (productCache.has(productId)) {
+        console.log(`shopify - cache hit for product ${productId}`);
+        return productCache.get(productId);
+    }
+
+    console.log(`shopify - cache miss for product ${productId}, fetching from API`);
     const session = shopify.session.customAppSession(process.env.NEXT_PUBLIC_SHOPIFY_SHOP_URL!)
     const client = new shopify.clients.Rest({session})
     const product = await client.get({
         path: `products/${productId}`,
     })
 
-    return product.body.product;
+    const productData = product.body.product;
+
+    // Store in cache
+    productCache.set(productId, productData);
+
+    return productData;
 }
 
 
