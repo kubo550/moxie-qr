@@ -17,12 +17,23 @@ const chat = async function handler(
         const {conversation} = req.body
         console.log('chat - got request', {conversationLength: conversation.length, sessionId});
 
-        const reply= await getMoxieReply(conversation);
+        const reply = await getMoxieReply(conversation);
 
         console.log('chat - got reply', {reply, sessionId})
         return res.status(200).json({reply})
-    } catch (e) {
+    } catch (e: any) {
+        console.error('error during chat', {
+            error: e.message,
+            status: e.status,
+            type: e.type,
+            code: e.code,
+        });
 
+        return res.status(500).json({
+            error: 'Failed to generate response',
+            message: e.message || 'Unknown error',
+            code: e.code || 'UNKNOWN_ERROR'
+        });
     }
 };
 
